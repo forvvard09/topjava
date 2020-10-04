@@ -35,9 +35,6 @@
             </td>
             <td align="center">${meal.getDescription()}</td>
             <td align="center">${meal.getCalories()}</td>
-
-            <td><a href="&action=edit"><img src="img/pencil.png"></a></td>
-            <td><a href=&action=delete"><img src="img/delete.png"></a></td>
         </tr>
     </c:forEach>
 
@@ -48,11 +45,6 @@
     </c:forEach>--%>
 
 </table>
-<div class="create-new-meal" style="margin-left: 30px">
-    <button class="addNewMeal"><img src="img/add.png">Добавить прием пищи</button>
-</div>
-</br>
-
 
 </body>
 </html>
