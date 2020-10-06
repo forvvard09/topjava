@@ -12,7 +12,7 @@
 <body>
 <h3><a href="index.html">Home</a></h3>
 <hr>
-<h2>New meal</h2>
+<h2>Create and edit meal</h2>
 
 <form method="post" action="meals" enctype="application/x-www-form-urlencoded">
     <input type="hidden" name="uuid" value="${meal.uuid}">
@@ -33,12 +33,11 @@
     <hr>
     <div class="buttons">
         <button class="saveMeal" style="margin-left: 30px" type="submit">Сохранить</button>
-        <button class="cancelMeal" style="margin-left: 90px" onclick="window.history.back()">Отмена</button>
-        <button class="cancelMealTest" style="margin-left: 90px" onclick="history.back(); return false;">Отмена</button>
-
+        <button class="cancelMeal" style="margin-left: 90px" type="button" onclick="window.history.back()">Отмена</button>
     </div>
 </form>
 
 </body>
 </html>
+
 
