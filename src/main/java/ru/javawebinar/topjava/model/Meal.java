@@ -4,17 +4,36 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+import static ru.javawebinar.topjava.util.MealsUtil.getRandomUuid;
+
+
 public class Meal {
-    private final LocalDateTime dateTime;
 
-    private final String description;
+    private String uuid;
 
-    private final int calories;
+    private LocalDateTime dateTime;
+
+    private String description;
+
+    private int calories;
+
+    public Meal() {
+
+    }
 
     public Meal(LocalDateTime dateTime, String description, int calories) {
+        this(getRandomUuid(), dateTime, description, calories);
+    }
+
+    public Meal(String uuid, LocalDateTime dateTime, String description, int calories) {
+        this.uuid = uuid;
         this.dateTime = dateTime;
         this.description = description;
         this.calories = calories;
+    }
+
+    public String getUuid() {
+        return uuid;
     }
 
     public LocalDateTime getDateTime() {
@@ -37,4 +56,30 @@ public class Meal {
         return dateTime.toLocalTime();
     }
 
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setCalories(int calories) {
+        this.calories = calories;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Meal meal = (Meal) o;
+
+        return description.equals(meal.description);
+    }
+
+    @Override
+    public int hashCode() {
+        return uuid.hashCode();
+    }
 }
