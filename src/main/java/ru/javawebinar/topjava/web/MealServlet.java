@@ -42,7 +42,7 @@ public class MealServlet extends HttpServlet {
         String uuid = request.getParameter("uuid");
         String action = request.getParameter("action");
         if (action == null) {
-            log.info("redirect to meals");
+            log.debug("Do get. Redirect to meals");
             request.setAttribute("meals", MealsUtil.filteredByStreams(storage, LocalTime.of(0, 0), LocalTime.of(23, 59), 2000));
             request.getRequestDispatcher("/meals.jsp").forward(request, response);
             return;
@@ -51,16 +51,16 @@ public class MealServlet extends HttpServlet {
         Meal meal;
         switch (action) {
             case ("delete"):
-                log.info("delete meal");
+                log.debug("Do get. Change delete");
                 storage.delete(uuid);
                 response.sendRedirect("meals");
                 return;
             case ("add"):
-                log.info("add meal");
+                log.debug("Do get. Change add meal");
                 meal = new Meal();
                 break;
             case ("edit"):
-                log.info("edit meals");
+                log.debug("Do get. Change add edit");
                 meal = storage.get(uuid);
                 break;
             default:

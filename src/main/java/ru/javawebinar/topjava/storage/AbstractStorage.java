@@ -9,7 +9,6 @@ import java.util.List;
 
 public abstract class AbstractStorage<SK> implements Storage {
 
-
     private static final Logger LOG = LoggerFactory.getLogger(AbstractStorage.class);
 
     protected abstract void doSave(SK key, Meal newMeal);
@@ -20,9 +19,7 @@ public abstract class AbstractStorage<SK> implements Storage {
 
     protected abstract void doDelete(SK searchKey);
 
-    protected abstract SK getPosition(SK uuid);
-
-    protected abstract List<Meal>doCopyAll();
+    protected abstract List<Meal> doCopyAll();
 
     @Override
     public void save(Meal meal) {
@@ -51,7 +48,7 @@ public abstract class AbstractStorage<SK> implements Storage {
 
     @Override
     public List<Meal> getAll() {
-        LOG.info("getAll");
+        LOG.debug("getAll");
         return doCopyAll();
     }
 }

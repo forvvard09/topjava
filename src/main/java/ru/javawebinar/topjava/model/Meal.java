@@ -75,11 +75,15 @@ public class Meal {
 
         Meal meal = (Meal) o;
 
-        return description.equals(meal.description);
+        if (uuid != null ? !uuid.equals(meal.uuid) : meal.uuid != null) return false;
+        return description != null ? description.equals(meal.description) : meal.description == null;
+
     }
 
     @Override
     public int hashCode() {
-        return uuid.hashCode();
+        int result = uuid != null ? uuid.hashCode() : 0;
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        return result;
     }
 }

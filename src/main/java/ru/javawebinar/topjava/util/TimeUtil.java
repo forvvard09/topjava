@@ -8,7 +8,7 @@ public class TimeUtil {
 
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
 
-    public static boolean isBetweenHalfOpen(LocalTime lt, LocalTime startTime, LocalTime endTime) {
+    static boolean isBetweenHalfOpen(LocalTime lt, LocalTime startTime, LocalTime endTime) {
         return lt.compareTo(startTime) >= 0 && lt.compareTo(endTime) < 0;
     }
 
@@ -16,9 +16,4 @@ public class TimeUtil {
     public static LocalDateTime convertToDateTime(String strDateTime) {
         return LocalDateTime.parse(strDateTime, DATE_FORMATTER);
     }
-
-
-
-
-
 }

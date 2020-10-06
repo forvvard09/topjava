@@ -38,11 +38,6 @@ public class MealsMemoryStorage extends AbstractStorage<String> {
     }
 
     @Override
-    protected String getPosition(String uuid) {
-        return String.valueOf(mapMeal.get(uuid));
-    }
-
-    @Override
     protected List<Meal> doCopyAll() {
         return new ArrayList<>(mapMeal.values());
     }
