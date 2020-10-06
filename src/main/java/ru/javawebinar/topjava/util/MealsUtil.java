@@ -36,13 +36,14 @@ public class MealsUtil {
     }
 
     public static List<MealTo> filteredByStreams(Storage storage, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
-        Map<LocalDate, Integer> caloriesSumByDate = storage.getAll().stream()
+        List<Meal> listMeal = storage.getAll();
+        Map<LocalDate, Integer> caloriesSumByDate = listMeal.stream()
                 .collect(
                         Collectors.groupingBy(Meal::getDate, Collectors.summingInt(Meal::getCalories))
 //                      Collectors.toMap(Meal::getDate, Meal::getCalories, Integer::sum)
                 );
 
-        return storage.getAll().stream()
+        return listMeal.stream()
                 .filter(meal -> TimeUtil.isBetweenHalfOpen(meal.getTime(), startTime, endTime))
                 .map(meal -> createTo(meal, caloriesSumByDate.get(meal.getDate()) > caloriesPerDay))
                 .collect(Collectors.toList());
