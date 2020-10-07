@@ -2,7 +2,6 @@ package ru.javawebinar.topjava.util;
 
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.model.MealTo;
-import ru.javawebinar.topjava.storage.MealsMemoryStorage;
 import ru.javawebinar.topjava.storage.Storage;
 
 import java.time.LocalDate;
@@ -12,7 +11,6 @@ import java.time.Month;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class MealsUtil {
@@ -28,14 +26,7 @@ public class MealsUtil {
             new Meal(LocalDateTime.of(2020, Month.JANUARY, 28, 20, 0), "Ночной дожор", 2001)
     );
 
-    public static void main(String[] args) {
-        Storage storage = new MealsMemoryStorage();
-        MEALS.forEach(storage::save);
-        List<MealTo> mealsTo = filteredByStreams(storage, LocalTime.of(7, 0), LocalTime.of(23, 0), 2000);
-        mealsTo.forEach(System.out::println);
-    }
-
-    public static List<MealTo> filteredByStreams(Storage storage, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
+    public static List<MealTo> filteredByStreams(Storage<Integer> storage, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
         List<Meal> listMeal = storage.getAll();
         Map<LocalDate, Integer> caloriesSumByDate = listMeal.stream()
                 .collect(
@@ -50,10 +41,6 @@ public class MealsUtil {
     }
 
     private static MealTo createTo(Meal meal, boolean excess) {
-        return new MealTo(meal.getUuid(), meal.getDateTime(), meal.getDescription(), meal.getCalories(), excess);
-    }
-
-    public synchronized static String getRandomUuid() {
-        return UUID.randomUUID().toString();
+        return new MealTo(meal.getId(), meal.getDateTime(), meal.getDescription(), meal.getCalories(), excess);
     }
 }

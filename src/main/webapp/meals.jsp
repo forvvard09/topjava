@@ -22,12 +22,12 @@
 <body>
 <h3><a href="index.html">Home</a></h3>
 <hr>
-<h2>Список еды</h2>
+<h2>Meal list</h2>
 <table cellspacing="2" border="1" cellpadding="8">
     <tr>
-        <th>Дата</th>
-        <th>Описание</th>
-        <th>Количество каллорий</th>
+        <th>Date</th>
+        <th>Description</th>
+        <th>Calories</th>
         <th></th>
         <th></th>
     </tr>
@@ -41,8 +41,8 @@
         <td align="center">${meal.getDescription()}</td>
         <td align="center">${meal.getCalories()}</td>
 
-        <td><a href="meals?uuid=${meal.uuid}&action=edit"><img src="img/pencil.png"></a></td>
-        <td><a href="meals?uuid=${meal.uuid}&action=delete"><img src="img/delete.png"></a></td>
+        <td><a href="meals?id=${meal.id}&action=edit"><img src="img/pencil.png"></a></td>
+        <td><a href="meals?id=${meal.id}&action=delete"><img src="img/delete.png"></a></td>
     <tr>
         </c:forEach>
 </table>
@@ -54,7 +54,7 @@
 </c:forEach>--%>
 </br>
 <span class="meal-addMeal" style="margin-left: 200px">
-    <button class="addMeal"><img src="img/add.png" width="20" height="20"><br>Добавить прием пищи</button>
+    <button class="addMeal"><img src="img/add.png" width="20" height="20"><br>Add meal</button>
 </span>
 </body>
 </html>

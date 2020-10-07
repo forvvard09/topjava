@@ -4,13 +4,13 @@ import ru.javawebinar.topjava.model.Meal;
 
 import java.util.List;
 
-public interface Storage {
+public interface Storage<SK> {
 
     void save(final Meal meal);
 
-    Meal get(final String key);
+    Meal get(final SK key);
 
-    void delete(final String key);
+    void delete(final SK key);
 
     void update(final Meal newMeal);
 

@@ -1,44 +1,66 @@
 package ru.javawebinar.topjava.storage;
 
 
+import org.slf4j.Logger;
 import ru.javawebinar.topjava.model.Meal;
+import ru.javawebinar.topjava.web.MealServlet;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import static org.slf4j.LoggerFactory.getLogger;
 
 
-public class MealsMemoryStorage extends AbstractStorage<String> {
+public class MealsMemoryStorage implements Storage<Integer> {
 
+    private final Map<Integer, Meal> mapMeal;
+    private final AtomicInteger counter;
 
-    private final Map<String, Meal> mapMeal = new ConcurrentHashMap<>();
+    private static final Logger log = getLogger(MealServlet.class);
 
-    @Override
-    protected void doSave(String key, Meal newMeal) {
-        mapMeal.put(key, newMeal);
+    public MealsMemoryStorage() {
+        this.counter = new AtomicInteger(0);
+        this.mapMeal = new ConcurrentHashMap<>();
     }
 
     @Override
-    protected Meal getFromStorage(String searchKey) {
-        return mapMeal.get(searchKey);
+    public void save(Meal meal) {
+        log.debug("Save to storage meal: " + meal);
+        meal.setId(getCount());
+        log.debug("Save to storage meal, new id: " + meal.getId());
+        mapMeal.put(meal.getId(), meal);
     }
 
     @Override
-    protected void doUpdate(String searchKey, Meal newMeal) {
-        Meal updateMeal = getFromStorage(searchKey);
-        updateMeal.setDateTime(newMeal.getDateTime());
-        updateMeal.setDescription(newMeal.getDescription());
-        updateMeal.setCalories(newMeal.getCalories());
+    public Meal get(Integer key) {
+        log.debug("Get meal from storage, key: " + key);
+        return mapMeal.get(key);
     }
 
     @Override
-    protected void doDelete(String searchKey) {
-        mapMeal.remove(searchKey);
+    public void delete(Integer key) {
+        log.debug("Remove meal by key: " + key);
+        mapMeal.remove(key);
     }
 
     @Override
-    protected List<Meal> doCopyAll() {
+    public void update(Meal newMeal) {
+        log.debug("Update meal: " + newMeal);
+        mapMeal.remove(newMeal.getId());
+        mapMeal.put(newMeal.getId(), newMeal);
+    }
+
+    @Override
+    public List<Meal> getAll() {
+        log.debug("Get all from storage");
         return new ArrayList<>(mapMeal.values());
+    }
+
+    private int getCount() {
+        log.debug("Storage, generate new id");
+        return this.counter.incrementAndGet();
     }
 }
