@@ -26,7 +26,7 @@ public class MealsUtil {
             new Meal(LocalDateTime.of(2020, Month.JANUARY, 28, 20, 0), "Ночной дожор", 2001)
     );
 
-    public static List<MealTo> filteredByStreams(Storage<Integer> storage, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
+    public static List<MealTo> filteredByStreams(Storage storage, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
         List<Meal> listMeal = storage.getAll();
         Map<LocalDate, Integer> caloriesSumByDate = listMeal.stream()
                 .collect(

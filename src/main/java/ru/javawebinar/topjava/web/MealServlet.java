@@ -21,10 +21,10 @@ import static ru.javawebinar.topjava.util.MealsUtil.MEALS;
 
 public class MealServlet extends HttpServlet {
 
-    private Storage<Integer> storage;
+    private Storage storage;
 
-    private final LocalTime MAX_TIME = LocalTime.MAX;
-    private final LocalTime MIN_TIME = LocalTime.MIN;
+    private static final LocalTime MAX_TIME = LocalTime.MAX;
+    private static final LocalTime MIN_TIME = LocalTime.MIN;
 
     private static final Logger log = getLogger(MealServlet.class);
 
@@ -40,14 +40,14 @@ public class MealServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8"); // принимаем русские буквы
         String id = request.getParameter("id");
         LocalDateTime dateTime = TimeUtil.convertToDateTime(request.getParameter("dateTime"));
-        int callories = Integer.parseInt(request.getParameter("callories"));
+        int callories = transformationId(request.getParameter("callories"));
         String description = request.getParameter("description");
-        if (id.equals("")) {
+        if (id.equals("-1")) {
             log.debug("Do post. Save new meal.");
             storage.save(new Meal(dateTime, description, callories));
         } else {
             log.debug("Do post. Update new meal.");
-            storage.update(new Meal(Integer.parseInt(id), dateTime, description, callories));
+            storage.update(new Meal(transformationId(id), dateTime, description, callories));
         }
         response.sendRedirect("meals");
     }
@@ -66,7 +66,7 @@ public class MealServlet extends HttpServlet {
         switch (action) {
             case ("delete"):
                 log.debug("Do get. Choice delete");
-                storage.delete(Integer.valueOf(id));
+                storage.delete(transformationId(id));
                 response.sendRedirect("meals");
                 return;
             case ("add"):
@@ -75,14 +75,16 @@ public class MealServlet extends HttpServlet {
                 break;
             case ("edit"):
                 log.debug("Do get. Choice edit meal");
-                meal = storage.get(Integer.valueOf(id));
+                meal = storage.get(transformationId(id));
                 break;
             default:
                 throw new IllegalArgumentException("Action " + action + "is legal.");
         }
-        log.debug("MAX time: " + MAX_TIME);
-        log.debug("MIN time: " + MIN_TIME);
         request.setAttribute("meal", meal);
         request.getRequestDispatcher("/create_edit.jsp").forward(request, response);
+    }
+
+    private int transformationId(String inputId) {
+        return Integer.parseInt(inputId);
     }
 }

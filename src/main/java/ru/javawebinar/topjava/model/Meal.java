@@ -5,9 +5,9 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 
-
-
 public class Meal {
+
+    private static final int DEFAULT_ID = -1;
 
     private int id;
 
@@ -18,12 +18,11 @@ public class Meal {
     private int calories;
 
     public Meal() {
+        this.id = DEFAULT_ID;
     }
 
     public Meal(LocalDateTime dateTime, String description, int calories) {
-        this.dateTime = dateTime;
-        this.description = description;
-        this.calories = calories;
+        this(DEFAULT_ID, dateTime, description, calories);
     }
 
     public Meal(int id, LocalDateTime dateTime, String description, int calories) {

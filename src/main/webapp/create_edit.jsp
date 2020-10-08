@@ -15,24 +15,27 @@
 <h2>${meal.id == 0 ? "Create" : "Edit"}&nbsp;meal</h2>
 
 <form method="post" action="meals" enctype="application/x-www-form-urlencoded">
-    <input type="hidden" name="id" value="<%=meal.getId()%>">
+    <input type="hidden" name="id" value="${meal.id}">
     <dl>
         <dt>Дата и время:</dt>
-        <dd><input type="datetime-local" name="dateTime" value="<%=meal.getDateTime()%>"></dd>
+        <dd><input type="datetime-local" name="dateTime" value="${meal.dateTime}"></dd>
     </dl>
     <dl>
         <dt>Описание:</dt>
-        <dd><input type="text" name="description" size="50" value="<%=meal.getDescription()%>"></dd>
+        <dd><input type="text" name="description" size="50" value="${meal.description}"></dd>
     </dl>
     <dl>
         <dt>Количество каллорий:</dt>
-        <dd><input type="number" name="callories" size="5" value="<%=meal.getCalories()%>"></dd>
+        <dd><input type="number" name="callories" size="5" value="${meal.calories}"></dd>
     </dl>
     </br>
     <hr align="left" width="20%">
     <div class="buttons">
-        <button class="saveMeal" style="margin-left: 30px; visibility: ${meal.id == 0 ? "hidden" : "visible"}" type="submit">Save</button>
-        <button class="cancelMeal" style="margin-left: 90px" type="button" onclick="window.history.back()">Cancel</button>
+        <button class="saveMeal" style="margin-left: 30px; visibility: ${meal.id == 0 ? "hidden" : "visible"}"
+                type="submit">Save
+        </button>
+        <button class="cancelMeal" style="margin-left: 90px" type="button" onclick="window.history.back()">Cancel
+        </button>
     </div>
 </form>
 </body>
@@ -47,4 +50,3 @@
         });
     });
 </script>
-

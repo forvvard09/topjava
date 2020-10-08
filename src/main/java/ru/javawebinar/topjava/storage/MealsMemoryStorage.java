@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static org.slf4j.LoggerFactory.getLogger;
 
 
-public class MealsMemoryStorage implements Storage<Integer> {
+public class MealsMemoryStorage implements Storage {
 
     private final Map<Integer, Meal> mapMeal;
     private final AtomicInteger counter;
@@ -31,17 +31,17 @@ public class MealsMemoryStorage implements Storage<Integer> {
         log.debug("Save to storage meal: " + meal);
         meal.setId(getCount());
         log.debug("Save to storage meal, new id: " + meal.getId());
-        mapMeal.put(meal.getId(), meal);
+        mapMeal.putIfAbsent(meal.getId(), meal);
     }
 
     @Override
-    public Meal get(Integer key) {
+    public Meal get(int key) {
         log.debug("Get meal from storage, key: " + key);
         return mapMeal.get(key);
     }
 
     @Override
-    public void delete(Integer key) {
+    public void delete(int key) {
         log.debug("Remove meal by key: " + key);
         mapMeal.remove(key);
     }
@@ -49,8 +49,7 @@ public class MealsMemoryStorage implements Storage<Integer> {
     @Override
     public void update(Meal newMeal) {
         log.debug("Update meal: " + newMeal);
-        mapMeal.remove(newMeal.getId());
-        mapMeal.put(newMeal.getId(), newMeal);
+        mapMeal.computeIfPresent(newMeal.getId(), (key, value) -> newMeal);
     }
 
     @Override
@@ -61,6 +60,6 @@ public class MealsMemoryStorage implements Storage<Integer> {
 
     private int getCount() {
         log.debug("Storage, generate new id");
-        return this.counter.incrementAndGet();
+        return counter.incrementAndGet();
     }
 }
