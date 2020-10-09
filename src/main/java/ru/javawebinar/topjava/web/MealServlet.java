@@ -40,14 +40,14 @@ public class MealServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8"); // принимаем русские буквы
         String id = request.getParameter("id");
         LocalDateTime dateTime = TimeUtil.convertToDateTime(request.getParameter("dateTime"));
-        int callories = transformationId(request.getParameter("callories"));
+        int callories = getAsInt(request.getParameter("callories"));
         String description = request.getParameter("description");
         if (id.equals("-1")) {
             log.debug("Do post. Save new meal.");
             storage.save(new Meal(dateTime, description, callories));
         } else {
             log.debug("Do post. Update new meal.");
-            storage.update(new Meal(transformationId(id), dateTime, description, callories));
+            storage.update(new Meal(getAsInt(id), dateTime, description, callories));
         }
         response.sendRedirect("meals");
     }
@@ -57,7 +57,7 @@ public class MealServlet extends HttpServlet {
         String action = request.getParameter("action");
         if (action == null) {
             log.debug("Do get. Redirect to meals");
-            request.setAttribute("meals", MealsUtil.filteredByStreams(storage, MIN_TIME, MAX_TIME, 2000));
+            request.setAttribute("meals", MealsUtil.filteredByStreams(storage.getAll(), MIN_TIME, MAX_TIME, 2000));
             request.getRequestDispatcher("/meals.jsp").forward(request, response);
             return;
         }
@@ -66,7 +66,7 @@ public class MealServlet extends HttpServlet {
         switch (action) {
             case ("delete"):
                 log.debug("Do get. Choice delete");
-                storage.delete(transformationId(id));
+                storage.delete(getAsInt(id));
                 response.sendRedirect("meals");
                 return;
             case ("add"):
@@ -75,7 +75,7 @@ public class MealServlet extends HttpServlet {
                 break;
             case ("edit"):
                 log.debug("Do get. Choice edit meal");
-                meal = storage.get(transformationId(id));
+                meal = storage.get(getAsInt(id));
                 break;
             default:
                 throw new IllegalArgumentException("Action " + action + "is legal.");
@@ -84,7 +84,7 @@ public class MealServlet extends HttpServlet {
         request.getRequestDispatcher("/create_edit.jsp").forward(request, response);
     }
 
-    private int transformationId(String inputId) {
+    private int getAsInt(String inputId) {
         return Integer.parseInt(inputId);
     }
 }

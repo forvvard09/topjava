@@ -2,7 +2,6 @@ package ru.javawebinar.topjava.util;
 
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.model.MealTo;
-import ru.javawebinar.topjava.storage.Storage;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -26,15 +25,15 @@ public class MealsUtil {
             new Meal(LocalDateTime.of(2020, Month.JANUARY, 28, 20, 0), "Ночной дожор", 2001)
     );
 
-    public static List<MealTo> filteredByStreams(Storage storage, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
-        List<Meal> listMeal = storage.getAll();
-        Map<LocalDate, Integer> caloriesSumByDate = listMeal.stream()
+    public static List<MealTo> filteredByStreams(List<Meal> listMeals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
+
+        Map<LocalDate, Integer> caloriesSumByDate = listMeals.stream()
                 .collect(
                         Collectors.groupingBy(Meal::getDate, Collectors.summingInt(Meal::getCalories))
 //                      Collectors.toMap(Meal::getDate, Meal::getCalories, Integer::sum)
                 );
 
-        return listMeal.stream()
+        return listMeals.stream()
                 .filter(meal -> TimeUtil.isBetweenHalfOpen(meal.getTime(), startTime, endTime))
                 .map(meal -> createTo(meal, caloriesSumByDate.get(meal.getDate()) > caloriesPerDay))
                 .collect(Collectors.toList());
