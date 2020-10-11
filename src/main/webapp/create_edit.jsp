@@ -30,7 +30,8 @@
 <h3><a href="index.html">Home</a></h3>
 <hr>
 
-<h2>${meal.id == -1 ? "Create" : "Edit"}&nbsp;meal</h2>
+<%--<h2>${meal.id == -1 ? "Create" : "Edit"}&nbsp;meal</h2>--%>
+<h2>${param.action == 'add' ? "Create" : "Edit"}&nbsp;meal</h2>
 
 <form method="post" action="meals" enctype="application/x-www-form-urlencoded">
     <input type="hidden" name="id" value="${meal.id}">
