@@ -51,6 +51,4 @@ public class MealTo {
                 ", excess=" + excess +
                 '}';
     }
-
-
 }
