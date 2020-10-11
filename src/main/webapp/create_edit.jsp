@@ -36,15 +36,15 @@
     <input type="hidden" name="id" value="${meal.id}">
     <dl>
         <dt>Дата и время:</dt>
-        <dd><input type="datetime-local" name="dateTime" value="${meal.dateTime}"></dd>
+        <dd><input type="datetime-local" name="dateTime" value="${meal.dateTime}" required></dd>
     </dl>
     <dl>
         <dt>Описание:</dt>
-        <dd><input type="text" name="description" size="50" value="${meal.description}"></dd>
+        <dd><input type="text" name="description" size="50" value="${meal.description}" required></dd>
     </dl>
     <dl>
         <dt>Количество каллорий:</dt>
-        <dd><input type="number" name="callories" size="5" value="${meal.calories}"></dd>
+        <dd><input type="number" name="callories" size="5" value="${meal.calories}" required></dd>
     </dl>
     </br>
     <hr align="left" width="20%">
