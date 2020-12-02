@@ -14,7 +14,6 @@ import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFoundWithId;
 @Service
 public class MealService {
 
-    @Autowired
     private final MealRepository repository;
 
     public MealService(MealRepository repository) {
@@ -26,11 +25,11 @@ public class MealService {
     }
 
     public void delete(int userId, int id) {
-        checkNotFoundWithId(repository.delete(userId, id), id);
+        checkNotFoundWithId(repository.delete(userId, id), id, "MealService");
     }
 
     public Meal get(int userId, int id) {
-        return checkNotFoundWithId(repository.get(userId, id), id);
+        return checkNotFoundWithId(repository.get(userId, id), id,"MealService" );
     }
 
     //model -> dto
@@ -39,6 +38,6 @@ public class MealService {
     }
 
     public void update(int userId, Meal meal) {
-        checkNotFoundWithId(repository.save(userId, meal), meal.getId());
+        checkNotFoundWithId(repository.save(userId, meal), meal.getId(), "MealService");
     }
 }

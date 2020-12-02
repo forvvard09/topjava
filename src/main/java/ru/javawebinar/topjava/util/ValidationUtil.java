@@ -6,23 +6,23 @@ import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 public class ValidationUtil {
 
-    public static <T> T checkNotFoundWithId(T object, int id) {
-        checkNotFoundWithId(object != null, id);
+    public static <T> T checkNotFoundWithId(T object, int id, String nameService) {
+        checkNotFoundWithId(object != null, id, nameService);
         return object;
     }
 
-    public static void checkNotFoundWithId(boolean found, int id) {
-        checkNotFound(found, "id=" + id);
+    public static void checkNotFoundWithId(boolean found, int id, String nameService) {
+        checkNotFound(found, "id=" + id, nameService);
     }
 
-    public static <T> T checkNotFound(T object, String msg) {
-        checkNotFound(object != null, msg);
+    public static <T> T checkNotFound(T object, String msg, String nameService) {
+        checkNotFound(object != null, msg, nameService);
         return object;
     }
 
-    public static void checkNotFound(boolean found, String msg) {
+    public static void checkNotFound(boolean found, String msg, String nameService) {
         if (!found) {
-            throw new NotFoundException("Not found entity with " + msg);
+            throw new NotFoundException("Not found entity with " + msg + " service: " + nameService);
         }
     }
 

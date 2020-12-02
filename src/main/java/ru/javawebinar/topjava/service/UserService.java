@@ -23,15 +23,15 @@ public class UserService {
     }
 
     public void delete(int id) {
-        checkNotFoundWithId(repository.delete(id), id);
+        checkNotFoundWithId(repository.delete(id), id, "UserService");
     }
 
     public User get(int id) {
-        return checkNotFoundWithId(repository.get(id), id);
+        return checkNotFoundWithId(repository.get(id), id, "UserService");
     }
 
     public User getByEmail(String email) {
-        return checkNotFound(repository.getByEmail(email), "email=" + email);
+        return checkNotFound(repository.getByEmail(email), "email=" + email, "UserService");
     }
 
     public List<User> getAll() {
@@ -39,6 +39,6 @@ public class UserService {
     }
 
     public void update(User user) {
-        checkNotFoundWithId(repository.save(user), user.getId());
+        checkNotFoundWithId(repository.save(user), user.getId(), "UserService");
     }
 }
