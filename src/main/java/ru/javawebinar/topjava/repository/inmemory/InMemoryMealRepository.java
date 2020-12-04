@@ -43,13 +43,13 @@ public class InMemoryMealRepository implements MealRepository {
 
     @Override
     public Meal get(int userId, int id) {
-        Map<Integer, Meal> repositoryMeals = repositoryUserMeal.getOrDefault(userId, null);
+        Map<Integer, Meal> repositoryMeals = repositoryUserMeal.get(userId);
         return repositoryMeals != null ? repositoryMeals.get(id) : null;
     }
 
     @Override
     public Collection<Meal> getAll(int userId) {
-        Map<Integer, Meal> repositoryMeals = repositoryUserMeal.getOrDefault(userId, null);
+        Map<Integer, Meal> repositoryMeals = repositoryUserMeal.get(userId);
         return repositoryMeals == null ? Collections.emptyList() : repositoryMeals.values()
                 .stream()
                 .sorted(Comparator.comparing(Meal::getDate).reversed())
