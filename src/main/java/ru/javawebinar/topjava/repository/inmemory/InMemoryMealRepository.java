@@ -3,9 +3,11 @@ package ru.javawebinar.topjava.repository.inmemory;
 import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
+import ru.javawebinar.topjava.util.DateTimeUtil;
 import ru.javawebinar.topjava.util.MealsUtil;
 import ru.javawebinar.topjava.web.SecurityUtil;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -14,6 +16,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+import static ru.javawebinar.topjava.util.MealsUtil.DEFAULT_USERID;
+
 @Repository
 public class InMemoryMealRepository implements MealRepository {
 
@@ -21,7 +25,8 @@ public class InMemoryMealRepository implements MealRepository {
     private final AtomicInteger counter = new AtomicInteger(0);
 
     {
-        MealsUtil.meals.forEach(meal -> save(SecurityUtil.authUserId(), meal));
+        SecurityUtil.setAuthUserId(DEFAULT_USERID);
+        MealsUtil.meals.forEach(meal -> save(SecurityUtil.getAuthUserId(), meal));
     }
 
     @Override
@@ -55,5 +60,14 @@ public class InMemoryMealRepository implements MealRepository {
                 .sorted(Comparator.comparing(Meal::getDate).reversed())
                 .collect(Collectors.toList());
     }
-}
 
+    @Override
+    public Collection<Meal> getBetweenHalfOpen(int userId, LocalDateTime startDay, LocalDateTime endDay, LocalDateTime startTime, LocalDateTime endTime) {
+        Map<Integer, Meal> repositoryMeals = repositoryUserMeal.get(userId);
+        return repositoryMeals == null ? Collections.emptyList() : repositoryMeals.values()
+                .stream()
+                .filter(meal -> DateTimeUtil.isBetweenHalfOpen(meal.getDateTime(), startDay, endDay, startTime, endTime))
+                .sorted(Comparator.comparing(Meal::getDate).reversed())
+                .collect(Collectors.toList());
+    }
+}

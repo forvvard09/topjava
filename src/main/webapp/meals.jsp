@@ -5,6 +5,8 @@
 <%--<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>--%>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
     <title>Meal list</title>
     <style>
         .normal {
@@ -21,6 +23,32 @@
     <h3><a href="index.html">Home</a></h3>
     <hr/>
     <h2>Meals</h2>
+
+    <hr>
+    <section>
+        <form id="mealTo_filtres" method="get" action="meals">
+            <input type="hidden" value="filter" name="action">
+            <p>
+            <h1>Filters:</h1></p>
+
+            <label>Start day (>=)</label>
+            <dd><input type="date" value="" name="startDay"></dd>
+
+            <label>End day (>=)</label>
+            <dd><input type="date" value="" name="endDay"></dd>
+
+
+            <label>Start time(>=)</label>
+            <dd><input type="time" value="" name="startTime"></dd>
+
+            <label>End time (<)</label>
+            <dd><input type="time" value="" name="endTime"></dd>
+            <br>
+            <button type="submit" style="margin-left: 100px">Отфильтровать</button>
+        </form>
+    </section>
+    <hr>
+    <br>
     <a href="meals?action=create">Add Meal</a>
     <br><br>
     <table border="1" cellpadding="8" cellspacing="0">
