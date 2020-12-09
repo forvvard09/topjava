@@ -14,6 +14,7 @@ import java.util.Comparator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static ru.javawebinar.topjava.util.MealsUtil.DEFAULT_USERID;
@@ -54,19 +55,19 @@ public class InMemoryMealRepository implements MealRepository {
 
     @Override
     public Collection<Meal> getAll(int userId) {
-        Map<Integer, Meal> repositoryMeals = repositoryUserMeal.get(userId);
-        return repositoryMeals == null ? Collections.emptyList() : repositoryMeals.values()
-                .stream()
-                .sorted(Comparator.comparing(Meal::getDate).reversed())
-                .collect(Collectors.toList());
+        return filterByPredicate(userId, meal -> true);
     }
 
     @Override
-    public Collection<Meal> getBetweenHalfOpen(int userId, LocalDateTime startDay, LocalDateTime endDay, LocalDateTime startTime, LocalDateTime endTime) {
+    public Collection<Meal> getBetweenHalfOpen(int userId, LocalDateTime startDay, LocalDateTime endDay) {
+        return filterByPredicate(userId, meal -> DateTimeUtil.isBetweenHalfOpen(meal.getDateTime(), startDay, endDay, null, null));
+    }
+
+    private Collection<Meal> filterByPredicate(int userId, Predicate<Meal> filter) {
         Map<Integer, Meal> repositoryMeals = repositoryUserMeal.get(userId);
         return repositoryMeals == null ? Collections.emptyList() : repositoryMeals.values()
                 .stream()
-                .filter(meal -> DateTimeUtil.isBetweenHalfOpen(meal.getDateTime(), startDay, endDay, startTime, endTime))
+                .filter(filter)
                 .sorted(Comparator.comparing(Meal::getDate).reversed())
                 .collect(Collectors.toList());
     }

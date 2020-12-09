@@ -24,17 +24,18 @@ public class MealServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(MealServlet.class);
 
     private MealRestController mealRestController;
+    private ConfigurableApplicationContext appCtx;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        try (ConfigurableApplicationContext appCtx = new ClassPathXmlApplicationContext("spring/spring-app.xml")) {
-            mealRestController = appCtx.getBean(MealRestController.class);
-        }
+        appCtx = new ClassPathXmlApplicationContext("spring/spring-app.xml");
+        mealRestController = appCtx.getBean(MealRestController.class);
     }
 
     @Override
     public void destroy() {
+        appCtx.close();
         super.destroy();
     }
 
@@ -77,14 +78,20 @@ public class MealServlet extends HttpServlet {
                 request.setAttribute("meal", meal);
                 request.getRequestDispatcher("/mealForm.jsp").forward(request, response);
                 break;
-            case "filter":
+            case "filter-day":
                 LocalDateTime startDay = getDaysFilterForm(request.getParameter("startDay"));
                 LocalDateTime endDay = getDaysFilterForm(request.getParameter("endDay"));
+
+                log.info("Controller: filter day. startDay {}, endDay {}", startDay, endDay);
+                request.setAttribute("meals", mealRestController.getFilterDay(startDay, endDay, null, null));
+                request.getRequestDispatcher("/meals.jsp").forward(request, response);
+                break;
+            case "filter-time":
                 LocalDateTime startTime = getTimeFilterForm(request.getParameter("startTime"));
                 LocalDateTime endTime = getTimeFilterForm(request.getParameter("endTime"));
 
-                log.info("Controller: filter. startDay {}, endDay {}, startTime {}, endTime {} ", startDay, endDay, startTime, endTime);
-                request.setAttribute("meals", mealRestController.getBetweenHalfOpen(startDay, endDay, startTime, endTime));
+                log.info("Controller: filter time. startTime {}, endTime {} ", startTime, endTime);
+                request.setAttribute("meals", mealRestController.getFilterTime(startTime, endTime));
                 request.getRequestDispatcher("/meals.jsp").forward(request, response);
                 break;
             case "all":

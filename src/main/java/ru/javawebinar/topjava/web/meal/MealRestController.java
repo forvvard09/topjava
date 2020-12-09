@@ -37,10 +37,16 @@ public class MealRestController {
         return service.getAll(userId, SecurityUtil.authUserCaloriesPerDay());
     }
 
-    public List<MealTo> getBetweenHalfOpen(LocalDateTime startDay, LocalDateTime endDay, LocalDateTime startTime, LocalDateTime endTime) {
+    public List<MealTo> getFilterTime(LocalDateTime startTime, LocalDateTime endTime) {
         int userId = SecurityUtil.getAuthUserId();
-        log.info("getBetweenHalfOpen startDay {}, endDay {}, startTime {}, endTime {} ", startDay, endDay, startTime, endTime);
-        return service.getBetweenHalfOpen(userId, startDay, endDay, startTime, endTime, SecurityUtil.authUserCaloriesPerDay());
+        log.info("getAll for meal for user, userId {}", userId);
+        return service.getFilterTime(userId, SecurityUtil.authUserCaloriesPerDay(), startTime, endTime);
+    }
+
+    public List<MealTo> getFilterDay(LocalDateTime startDay, LocalDateTime endDay, LocalDateTime startTime, LocalDateTime endTime) {
+        int userId = SecurityUtil.getAuthUserId();
+        log.info("getFilterDay startDay {}, endDay {}, startTime {}, endTime {} ", startDay, endDay, startTime, endTime);
+        return service.getFilterDay(userId, startDay, endDay, SecurityUtil.authUserCaloriesPerDay());
     }
 
     public Meal get(int id) {

@@ -18,6 +18,6 @@ public interface MealRepository {
 
     Collection<Meal> getAll(int userId);
 
-    Collection<Meal> getBetweenHalfOpen(int userId, LocalDateTime startDay, LocalDateTime endDay, LocalDateTime startTime, LocalDateTime endTime);
+    Collection<Meal> getBetweenHalfOpen(int userId, LocalDateTime startDay, LocalDateTime endDay);
 
 }

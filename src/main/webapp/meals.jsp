@@ -26,17 +26,26 @@
 
     <hr>
     <section>
-        <form id="mealTo_filtres" method="get" action="meals">
-            <input type="hidden" value="filter" name="action">
+        <form id="meal_filtres_day" method="get" action="meals">
+            <input type="hidden" value="filter-day" name="action">
             <p>
-            <h1>Filters:</h1></p>
+            <h1>Filter day:</h1></p>
 
             <label>Start day (>=)</label>
             <dd><input type="date" value="" name="startDay"></dd>
 
             <label>End day (>=)</label>
             <dd><input type="date" value="" name="endDay"></dd>
-
+            <br>
+            <button type="submit" style="margin-left: 100px">Фильтрация по дянм</button>
+        </form>
+    </section>
+    <hr>
+    <section>
+        <form id="mealTo_filtres_time" method="get" action="meals">
+            <input type="hidden" value="filter-time" name="action">
+            <p>
+            <h1>Filter time:</h1></p>
 
             <label>Start time(>=)</label>
             <dd><input type="time" value="" name="startTime"></dd>
@@ -44,7 +53,7 @@
             <label>End time (<)</label>
             <dd><input type="time" value="" name="endTime"></dd>
             <br>
-            <button type="submit" style="margin-left: 100px">Отфильтровать</button>
+            <button type="submit" style="margin-left: 100px">Фильтрация по времени</button>
         </form>
     </section>
     <hr>

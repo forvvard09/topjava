@@ -38,12 +38,17 @@ public class MealService {
         return MealsUtil.getTos(repository.getAll(userId), caloriesPerDay);
     }
 
+    public List<MealTo> getFilterTime(int userId, int caloriesPerDay, LocalDateTime startTime, LocalDateTime endTime) {
+        return MealsUtil.getFilteredTos(repository.getAll(userId), caloriesPerDay, startTime, endTime);
+    }
+
+
     public void update(int userId, Meal meal) {
         checkNotFoundWithId(repository.save(userId, meal), meal.getId(), "MealService");
     }
 
-    public List<MealTo> getBetweenHalfOpen(int userId, LocalDateTime startDay, LocalDateTime endDay, LocalDateTime startTime, LocalDateTime endTime, int caloriesPerDay) {
-        Collection<Meal> listMealBetween = repository.getBetweenHalfOpen(userId, startDay, endDay, startTime, endTime);
+    public List<MealTo> getFilterDay(int userId, LocalDateTime startDay, LocalDateTime endDay, int caloriesPerDay) {
+        Collection<Meal> listMealBetween = repository.getBetweenHalfOpen(userId, startDay, endDay);
         return MealsUtil.getTos(listMealBetween, caloriesPerDay);
     }
 }

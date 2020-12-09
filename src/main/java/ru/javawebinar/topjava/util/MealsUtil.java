@@ -5,7 +5,6 @@ import ru.javawebinar.topjava.to.MealTo;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.Month;
 import java.util.Arrays;
 import java.util.Collection;
@@ -19,21 +18,21 @@ public class MealsUtil {
     public static final int DEFAULT_USERID = 1;
 
     public static final List<Meal> meals = Arrays.asList(
-            new Meal(LocalDateTime.of(2020, Month.JANUARY, 1, 9, 0), "Завтрак", 500),
-            new Meal(LocalDateTime.of(2020, Month.JANUARY, 2, 10, 0), "Обед", 1000),
-            new Meal(LocalDateTime.of(2020, Month.JANUARY, 3, 11, 0), "Ужин", 500),
-            new Meal(LocalDateTime.of(2020, Month.JANUARY, 4, 12, 0), "Еда на граничное значение", 100),
-            new Meal(LocalDateTime.of(2020, Month.JANUARY, 5, 13, 0), "Завтрак", 1000),
-            new Meal(LocalDateTime.of(2020, Month.JANUARY, 6, 14, 0), "Обед", 500),
-            new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0), "Ужин", 410)
+            new Meal(LocalDateTime.of(2020, Month.DECEMBER, 6, 9, 0), "Завтрак", 500),
+            new Meal(LocalDateTime.of(2020, Month.DECEMBER, 6, 10, 0), "Обед", 1000),
+            new Meal(LocalDateTime.of(2020, Month.DECEMBER, 7, 11, 0), "Ужин", 500),
+            new Meal(LocalDateTime.of(2020, Month.DECEMBER, 7, 12, 0), "Еда на граничное значение", 100),
+            new Meal(LocalDateTime.of(2020, Month.DECEMBER, 8, 13, 0), "Завтрак", 1000),
+            new Meal(LocalDateTime.of(2020, Month.DECEMBER, 8, 14, 0), "Обед", 500),
+            new Meal(LocalDateTime.of(2020, Month.DECEMBER, 8, 20, 0), "Ужин", 410)
     );
 
     public static List<MealTo> getTos(Collection<Meal> meals, int caloriesPerDay) {
         return filterByPredicate(meals, caloriesPerDay, meal -> true);
     }
 
-    public static List<MealTo> getFilteredTos(Collection<Meal> meals, int caloriesPerDay, LocalTime startTime, LocalTime endTime) {
-        return filterByPredicate(meals, caloriesPerDay, meal -> DateTimeUtil.isBetweenHalfOpen(meal.getTime(), startTime, endTime));
+    public static List<MealTo> getFilteredTos(Collection<Meal> meals, int caloriesPerDay, LocalDateTime startTime, LocalDateTime endTime) {
+        return filterByPredicate(meals, caloriesPerDay, meal -> DateTimeUtil.isBetweenHalfOpen(meal.getDateTime(), null, null, startTime, endTime));
     }
 
     public static List<MealTo> filterByPredicate(Collection<Meal> meals, int caloriesPerDay, Predicate<Meal> filter) {
