@@ -9,7 +9,7 @@ import java.util.List;
 
 import static ru.javawebinar.topjava.model.AbstractBaseEntity.START_SEQ;
 
-public class MealTestData extends TestsData<Meal> {
+public class MealTestData {
 
     public static final int MEAL_ID = START_SEQ + 2;
 

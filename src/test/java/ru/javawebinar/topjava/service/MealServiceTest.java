@@ -10,7 +10,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringRunner;
-import ru.javawebinar.topjava.MealTestData;
+import ru.javawebinar.topjava.TestsMatcher;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
@@ -24,13 +24,14 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 
 @ContextConfiguration({
         "classpath:spring/spring-app.xml",
+        "classpath:spring/spring-jdbc.xml",
         "classpath:spring/spring-db.xml"
 })
 @RunWith(SpringRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 public class MealServiceTest {
 
-    private static MealTestData mealTestData;
+    private static TestsMatcher<Meal> testsMatcher;
 
     static {
         // Only for postgres driver logging
@@ -43,7 +44,7 @@ public class MealServiceTest {
 
     @BeforeClass
     public static void setup() {
-        mealTestData = new MealTestData();
+        testsMatcher = new TestsMatcher<Meal>();
     }
 
     @Test
@@ -52,8 +53,8 @@ public class MealServiceTest {
         Meal createdMeal = service.create(newMeal, USER_ID);
         int newMealId = createdMeal.getId();
         newMeal.setId(newMealId);
-        mealTestData.assertMatch(createdMeal, newMeal);
-        mealTestData.assertMatch(service.get(newMealId, USER_ID), newMeal);
+        testsMatcher.assertMatch(createdMeal, newMeal);
+        testsMatcher.assertMatch(service.get(newMealId, USER_ID), newMeal);
     }
 
     @Test
@@ -67,7 +68,7 @@ public class MealServiceTest {
     @Test
     public void get() throws Exception {
         Meal meal = service.get(MEAL_ID, USER_ID);
-        mealTestData.assertMatch(meal, MEAL_ONE);
+        testsMatcher.assertMatch(meal, MEAL_ONE);
     }
 
     @Test
@@ -99,32 +100,32 @@ public class MealServiceTest {
     @Test
     public void getBetweenInclusiveEmptyBorders() throws Exception {
         List<Meal> listMeal = service.getBetweenInclusive(null, null, USER_ID);
-        mealTestData.assertMatch(listMeal, allMeal);
+        testsMatcher.assertMatch(listMeal, allMeal);
     }
 
     @Test
     public void getBetweenInclusive() throws Exception {
         List<Meal> listMeal = service.getBetweenInclusive(MEAL_THREE.getDate(), MEAL_THREE.getDate(), USER_ID);
-        mealTestData.assertMatch(listMeal, restrictedListMeal);
+        testsMatcher.assertMatch(listMeal, restrictedListMeal);
     }
 
     @Test
     public void getBetweenInclusiveMealOtherUser() throws Exception {
         List<Meal> listMeal = service.getBetweenInclusive(null, null, NOT_FOUND);
-        mealTestData.assertEmpty(listMeal);
+        testsMatcher.assertEmpty(listMeal);
     }
 
     @Test
     public void getAll() throws Exception {
         List<Meal> listMeal = service.getAll(USER_ID);
-        mealTestData.assertMatch(listMeal, allMeal);
+        testsMatcher.assertMatch(listMeal, allMeal);
     }
 
     @Test
     public void update() throws Exception {
         Meal updatedMeal = getUpdatedMeal();
         service.update(updatedMeal, USER_ID);
-        mealTestData.assertMatch(service.get(updatedMeal.getId(), USER_ID), updatedMeal);
+        testsMatcher.assertMatch(service.get(updatedMeal.getId(), USER_ID), updatedMeal);
     }
 
     @Test

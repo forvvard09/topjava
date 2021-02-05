@@ -4,11 +4,11 @@ import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class TestsData<T> {
+public class TestsMatcher<T> {
 
     private String[] ignoringFields;
 
-    public TestsData(String... ignoringFields) {
+    public TestsMatcher(String... ignoringFields) {
         this.ignoringFields = ignoringFields;
     }
 

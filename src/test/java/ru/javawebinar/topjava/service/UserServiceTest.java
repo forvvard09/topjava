@@ -10,6 +10,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringRunner;
+import ru.javawebinar.topjava.TestsMatcher;
 import ru.javawebinar.topjava.UserTestData;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
@@ -28,7 +29,9 @@ import static ru.javawebinar.topjava.UserTestData.*;
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 public class UserServiceTest {
 
-    private static UserTestData userTestData;
+    private static TestsMatcher<User> testsMatcher;
+
+    private static String[] ignoredFields = {"registered", "roles"};
 
     static {
         // Only for postgres driver logging
@@ -36,12 +39,13 @@ public class UserServiceTest {
         SLF4JBridgeHandler.install();
     }
 
+
     @Autowired
     private UserService service;
 
     @BeforeClass
     public static void setup() {
-        userTestData = new UserTestData();
+        testsMatcher = new TestsMatcher<User>(ignoredFields);
     }
 
 
@@ -51,8 +55,8 @@ public class UserServiceTest {
         User created = service.create(newUser);
         Integer newId = created.getId();
         newUser.setId(newId);
-        userTestData.assertMatch(created, newUser);
-        userTestData.assertMatch(service.get(newId), newUser);
+        testsMatcher.assertMatch(created, newUser);
+        testsMatcher.assertMatch(service.get(newId), newUser);
     }
 
     @Test
@@ -75,7 +79,7 @@ public class UserServiceTest {
     @Test
     public void get() throws Exception {
         User user = service.get(USER_ID);
-        userTestData.assertMatch(user, UserTestData.user);
+        testsMatcher.assertMatch(user, UserTestData.user);
     }
 
     @Test
@@ -86,19 +90,19 @@ public class UserServiceTest {
     @Test
     public void getByEmail() throws Exception {
         User user = service.getByEmail("admin@gmail.com");
-        userTestData.assertMatch(user, admin);
+        testsMatcher.assertMatch(user, admin);
     }
 
     @Test
     public void update() throws Exception {
         User updated = getUpdated();
         service.update(updated);
-        userTestData.assertMatch(service.get(USER_ID), updated);
+        testsMatcher.assertMatch(service.get(USER_ID), updated);
     }
 
     @Test
     public void getAll() throws Exception {
         List<User> all = service.getAll();
-        userTestData.assertMatch(all, admin, user);
+        testsMatcher.assertMatch(all, admin, user);
     }
 }
