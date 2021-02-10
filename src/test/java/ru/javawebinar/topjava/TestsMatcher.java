@@ -22,7 +22,7 @@ public class TestsMatcher<T> {
     }
 
     public void assertMatch(Iterable<T> actual, Iterable<T> expected) {
-        assertThat(actual).usingRecursiveComparison().ignoringFields(ignoringFields).isEqualTo(expected);
+        assertThat(actual).usingElementComparatorIgnoringFields(ignoringFields).isEqualTo(expected);
     }
 
     public void assertEmpty(Iterable<T> emptyList) {
