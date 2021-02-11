@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.AbstractSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -35,7 +37,9 @@ public class JdbcMealRepository implements MealRepository {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
 
-    @Override
+
+    //** существует альтернативный метод, https://stackoverflow.com/questions/13339171/how-to-combine-multiple-parameter-sources-in-spring-jdbc
+    /*@Override
     public Meal save(Meal meal, int userId) {
         MapSqlParameterSource map = new MapSqlParameterSource()
                 .addValue("id", meal.getId())
@@ -52,7 +56,29 @@ public class JdbcMealRepository implements MealRepository {
             return null;
         }
         return meal;
+    }*/
+
+    @Override
+    public Meal save(Meal meal, int userId) {
+
+        CombinedSqlParameterSource mySource = new CombinedSqlParameterSource(meal);
+        mySource.addValue("id", meal.getId());
+        mySource.addValue("user_id", userId);
+        mySource.addValue("date_time", meal.getDateTime());
+        mySource.addValue("description", meal.getDescription());
+        mySource.addValue("calories", meal.getCalories());
+        if (meal.isNew()) {
+            Number newKey = insertMeal.executeAndReturnKey(mySource);
+            meal.setId(newKey.intValue());
+        } else if (namedParameterJdbcTemplate.update(
+                "UPDATE meals SET date_time=:date_time, " +
+                        "description=:description, calories=:calories WHERE id= :id AND user_id= :user_id", mySource) == 0) {
+            return null;
+        }
+        return meal;
     }
+
+
 
     @Override
     public boolean delete(int id, int userId) {
@@ -77,5 +103,33 @@ public class JdbcMealRepository implements MealRepository {
                         "AND date_time < ?" +
                         "ORDER BY date_time DESC", ROW_MAPPER,
                 userId, startDateTime, endDateTime);
+    }
+}
+
+class CombinedSqlParameterSource extends AbstractSqlParameterSource {
+    private MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+    private BeanPropertySqlParameterSource beanPropertySqlParameterSource;
+
+    public CombinedSqlParameterSource(Object object) {
+        this.beanPropertySqlParameterSource = new BeanPropertySqlParameterSource(object);
+    }
+
+    public void addValue(String paramName, Object value) {
+        mapSqlParameterSource.addValue(paramName, value);
+    }
+
+    @Override
+    public boolean hasValue(String paramName) {
+        return beanPropertySqlParameterSource.hasValue(paramName) || mapSqlParameterSource.hasValue(paramName);
+    }
+
+    @Override
+    public Object getValue(String paramName) {
+        return beanPropertySqlParameterSource.hasValue(paramName) ? beanPropertySqlParameterSource.getValue(paramName) : mapSqlParameterSource.getValue(paramName);
+    }
+
+    @Override
+    public int getSqlType(String paramName) {
+        return beanPropertySqlParameterSource.hasValue(paramName) ? beanPropertySqlParameterSource.getSqlType(paramName) : mapSqlParameterSource.getSqlType(paramName);
     }
 }
