@@ -1,6 +1,5 @@
 package ru.javawebinar.topjava.repository.jpa;
 
-import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjava.model.Meal;
@@ -83,11 +82,18 @@ public class JpaMealRepository implements MealRepository {
                 .setParameter("id", id)
                 .getSingleResult();
          */
+
+        Meal meal = em.find(Meal.class, id);
+        return meal != null && meal.getUser().getId() == userId ? meal : null;
+
+        //еще один способ
+        /*
         List<Meal> meals = em.createQuery("SELECT m FROM Meal m WHERE m.user.id=:userId AND m.id=:id")
                 .setParameter("userId", userId)
                 .setParameter("id", id)
                 .getResultList();
         return DataAccessUtils.singleResult(meals);
+         */
     }
 
     @Override
