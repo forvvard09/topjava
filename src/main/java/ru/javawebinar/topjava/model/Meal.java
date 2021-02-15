@@ -1,9 +1,7 @@
 package ru.javawebinar.topjava.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -36,7 +34,8 @@ public class Meal extends AbstractBaseEntity {
 
     @Column(name = "calories", nullable = false)
     @NotNull
-    @Size(max = 9999)
+    @Min(value = 0, message="There can be no meal with that many calories")
+    @Max(value = 9999, message="There can be no meal with that many calories")
     private int calories;
 
     @ManyToOne(fetch = FetchType.LAZY)
