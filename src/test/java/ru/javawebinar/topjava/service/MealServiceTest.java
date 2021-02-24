@@ -42,9 +42,7 @@ public class MealServiceTest {
 
     @AfterClass
     public static void printTestLoadTime() {
-        log.debug("Total tests:");
-        //CustomerStopWatch.getAllTestsResult().forEach(log::debug);
-        for (String s : CustomerStopWatch.getAllTestsResult()) log.debug(s);
+        log.debug(CustomerStopWatch.getMessageAllTests());
     }
 
     @Test

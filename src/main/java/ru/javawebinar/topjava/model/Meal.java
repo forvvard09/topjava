@@ -33,13 +33,13 @@ public class Meal extends AbstractBaseEntity {
     private String description;
 
     @Column(name = "calories", nullable = false)
-    @NotNull
-    @Min(value = 0, message="There can be no meal with that many calories")
-    @Max(value = 9999, message="There can be no meal with that many calories")
+    @Min(value = 0, message = "There can be no meal with that many calories")
+    @Max(value = 9999, message = "There can be no meal with that many calories")
     private int calories;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
+    @NotNull
     private User user;
 
     public Meal() {

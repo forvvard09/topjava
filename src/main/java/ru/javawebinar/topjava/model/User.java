@@ -86,20 +86,12 @@ public class User extends AbstractNamedEntity {
         this.email = email;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public Date getRegistered() {
         return registered;
     }
 
     public void setRegistered(Date registered) {
         this.registered = registered;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
     }
 
     public int getCaloriesPerDay() {
@@ -114,16 +106,24 @@ public class User extends AbstractNamedEntity {
         return enabled;
     }
 
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
     public Set<Role> getRoles() {
         return roles;
+    }
+
+    public void setRoles(Collection<Role> roles) {
+        this.roles = CollectionUtils.isEmpty(roles) ? EnumSet.noneOf(Role.class) : EnumSet.copyOf(roles);
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setRoles(Collection<Role> roles) {
-        this.roles = CollectionUtils.isEmpty(roles) ? EnumSet.noneOf(Role.class) : EnumSet.copyOf(roles);
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override

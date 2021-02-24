@@ -8,7 +8,6 @@ import ru.javawebinar.topjava.repository.MealRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -32,14 +31,14 @@ public class JpaMealRepository implements MealRepository {
     @Override
     @Transactional
     public Meal save(Meal meal, int userId) {
+        User ref = em.getReference(User.class, userId);
+        meal.setUser(ref);
+
         if (meal.isNew()) {
-            User ref = em.getReference(User.class, userId);
-            meal.setUser(ref);
             em.persist(meal);
         } else {
-
+            /* при использовании этого метода не будет использоваться бин валидация
             Query query = em.createQuery("UPDATE Meal m SET m.description=:description, m.calories=:calories, m.dateTime=:dateTime WHERE m.id=:id AND m.user.id=:userId");
-
             if (query.setParameter("description", meal.getDescription())
                     .setParameter("calories", meal.getCalories())
                     .setParameter("dateTime", meal.getDateTime())
@@ -48,6 +47,9 @@ public class JpaMealRepository implements MealRepository {
                     .executeUpdate() == 0) {
                 return null;
             }
+             */
+            Meal mealFind = em.find(Meal.class, meal.getId());
+            return mealFind.getUser().getId() == userId ? em.merge(meal) : null;
         }
         return meal;
     }
