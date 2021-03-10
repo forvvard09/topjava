@@ -10,7 +10,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 public class CustomerStopWatch extends Stopwatch {
 
-    private static final Logger log = getLogger(CustomerStopWatch.class);
+    private static final Logger log = getLogger("user");
 
     private static StringBuilder totalMessage = new StringBuilder(String.format("%s,--> %s, %s ", System.lineSeparator(), "Total load test info: ", System.lineSeparator()));
 

@@ -11,37 +11,22 @@
         </encoder>
     </appender>
 
-    <logger name="org.postgresql" level="debug"/>
+    <!--    LOAD TESTS-->
+    <appender name="result" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%magenta(%msg%n)</pattern>
+        </encoder>
+    </appender>
+    <logger name="result" level="INFO" additivity="false">
+        <appender-ref ref="result"/>
+    </logger>
+
+<!--    <logger name="org.postgresql" level="debug"/>-->
     <logger name="org.springframework.jdbc" level="info"/>
-    <logger name="ru.javawebinar.topjava" level="debug"/>
+<!--    <logger name="ru.javawebinar.topjava" level="debug"/>-->
 
     <root level="INFO">
         <appender-ref ref="console"/>
     </root>
-
-    <!--    LOAD TESTS-->
-    <appender name="loadTest" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <charset>UTF-8</charset>
-            <pattern>%d %highlight(%-5level) [%thread] %cyan(%class{50}.%M:%L): %msg%n</pattern>
-        </encoder>
-    </appender>
-
-    <logger name="ru.javawebinar.topjava.util.CustomerStopWatch" level="debug">
-        <appender-ref ref="loadTest"/>
-    </logger>
-
-    <appender name="loadTests" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <charset>UTF-8</charset>
-            <pattern>%d %highlight(%-5level) [%thread] %red(%class{50}.%M:%L): %msg%n</pattern>
-        </encoder>
-    </appender>
-
-    <logger name="ru.javawebinar.topjava.service.MealServiceTest" level="debug">
-        <appender-ref ref="loadTests"/>
-    </logger>
-    LOAD TESTS
-
-
 </configuration>
