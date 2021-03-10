@@ -3,6 +3,7 @@ package ru.javawebinar.topjava.util;
 import org.junit.rules.Stopwatch;
 import org.junit.runner.Description;
 import org.slf4j.Logger;
+import ru.javawebinar.topjava.service.MealService;
 
 import java.util.concurrent.TimeUnit;
 
@@ -10,7 +11,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 public class CustomerStopWatch extends Stopwatch {
 
-    private static final Logger log = getLogger("user");
+    private static final Logger log = getLogger(MealService.class);
 
     private static StringBuilder totalMessage = new StringBuilder(String.format("%s,--> %s, %s ", System.lineSeparator(), "Total load test info: ", System.lineSeparator()));
 

@@ -32,7 +32,7 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 public class MealServiceTest {
 
-    private static final Logger log = getLogger("result");
+    private static final Logger log = getLogger(MealService.class);
 
     @Rule
     public CustomerStopWatch stopwatch = new CustomerStopWatch();
