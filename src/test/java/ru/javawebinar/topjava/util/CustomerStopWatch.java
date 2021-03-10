@@ -11,7 +11,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 public class CustomerStopWatch extends Stopwatch {
 
-    private static final Logger log = getLogger(MealService.class);
+    private static final Logger log = getLogger("result");
 
     private static StringBuilder totalMessage = new StringBuilder(String.format("%s,--> %s, %s ", System.lineSeparator(), "Total load test info: ", System.lineSeparator()));
 
@@ -19,7 +19,7 @@ public class CustomerStopWatch extends Stopwatch {
         String testName = description.getMethodName();
         String message = String.format("   >>> Test %s %s, load time %d microseconds",
                 testName, status, TimeUnit.NANOSECONDS.toMicros(nanos));
-        log.debug(message);
+        log.info(message);
         totalMessage.append(message).append(System.lineSeparator());
     }
 

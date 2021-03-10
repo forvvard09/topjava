@@ -32,7 +32,7 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 public class MealServiceTest {
 
-    private static final Logger log = getLogger(MealService.class);
+    private static final Logger log = getLogger("result");
 
     @Rule
     public CustomerStopWatch stopwatch = new CustomerStopWatch();
@@ -42,7 +42,7 @@ public class MealServiceTest {
 
     @AfterClass
     public static void printTestLoadTime() {
-        log.debug(CustomerStopWatch.getMessageAllTests());
+        log.info(String.format("\n%-25s", CustomerStopWatch.getMessageAllTests()));
     }
 
     @Test
