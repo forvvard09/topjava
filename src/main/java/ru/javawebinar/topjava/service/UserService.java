@@ -1,12 +1,15 @@
 package ru.javawebinar.topjava.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.UserRepository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFound;
@@ -16,6 +19,9 @@ import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFoundWithId;
 public class UserService {
 
     private final UserRepository repository;
+
+    @Autowired
+    private MealService mealService;
 
     public UserService(UserRepository repository) {
         this.repository = repository;
@@ -50,5 +56,14 @@ public class UserService {
     public void update(User user) {
         Assert.notNull(user, "user must not be null");
         checkNotFoundWithId(repository.save(user), user.id());
+    }
+
+    @Transactional
+    public User getWithMeals(Integer id) {
+        Assert.notNull(id, "id must not be null");
+        User user = checkNotFoundWithId(repository.get(id), id);
+        List<Meal> meals = mealService.getAll(id);
+        user.setMeals(meals);
+        return user;
     }
 }

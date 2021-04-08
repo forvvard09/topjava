@@ -1,7 +1,7 @@
 package ru.javawebinar.topjava;
 
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.core.env.ConfigurableEnvironment;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.to.MealTo;
@@ -14,10 +14,29 @@ import java.time.Month;
 import java.util.Arrays;
 import java.util.List;
 
+import static ru.javawebinar.topjava.Profiles.DATAJPA;
+import static ru.javawebinar.topjava.Profiles.POSTGRES_DB;
+
 public class SpringMain {
     public static void main(String[] args) {
         // java 7 automatic resource management (ARM)
-        try (ConfigurableApplicationContext appCtx = new ClassPathXmlApplicationContext("spring/spring-app.xml", "spring/inmemory.xml")) {
+
+        //work with profile: https://www.javacodegeeks.com/2012/08/spring-profiles-in-xml-config-files.html
+        try (ClassPathXmlApplicationContext appCtx = new ClassPathXmlApplicationContext()) {
+            appCtx.setConfigLocations("spring/spring-app.xml", "spring/inmemory.xml");
+            ConfigurableEnvironment env = appCtx.getEnvironment();
+            env.setActiveProfiles(POSTGRES_DB, DATAJPA);
+            appCtx.refresh();
+
+            //второй способ работы с профилями
+            /*
+            try (GenericXmlApplicationContext ctx = new GenericXmlApplicationContext();) {
+            ConfigurableEnvironment env = ctx.getEnvironment();
+            env.setActiveProfiles(POSTGRES_DB, DATAJPA);
+            ctx.load("spring/spring-app.xml", "spring/inmemory.xml");
+            ctx.refresh();
+             */
+
             System.out.println("Bean definition names: " + Arrays.toString(appCtx.getBeanDefinitionNames()));
             AdminRestController adminUserController = appCtx.getBean(AdminRestController.class);
             adminUserController.create(new User(null, "userName", "email@mail.ru", "password", Role.ADMIN));
