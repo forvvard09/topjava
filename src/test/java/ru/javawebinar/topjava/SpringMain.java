@@ -14,9 +14,6 @@ import java.time.Month;
 import java.util.Arrays;
 import java.util.List;
 
-import static ru.javawebinar.topjava.Profiles.DATAJPA;
-import static ru.javawebinar.topjava.Profiles.POSTGRES_DB;
-
 public class SpringMain {
     public static void main(String[] args) {
         // java 7 automatic resource management (ARM)
@@ -25,14 +22,14 @@ public class SpringMain {
         try (ClassPathXmlApplicationContext appCtx = new ClassPathXmlApplicationContext()) {
             appCtx.setConfigLocations("spring/spring-app.xml", "spring/inmemory.xml");
             ConfigurableEnvironment env = appCtx.getEnvironment();
-            env.setActiveProfiles(POSTGRES_DB, DATAJPA);
+            env.setActiveProfiles(Profiles.getActiveDbProfile(), Profiles.REPOSITORY_IMPLEMENTATION);
             appCtx.refresh();
 
             //второй способ работы с профилями
             /*
             try (GenericXmlApplicationContext ctx = new GenericXmlApplicationContext();) {
             ConfigurableEnvironment env = ctx.getEnvironment();
-            env.setActiveProfiles(POSTGRES_DB, DATAJPA);
+            env.setActiveProfiles(Profiles.getActiveDbProfile(), Profiles.REPOSITORY_IMPLEMENTATION);
             ctx.load("spring/spring-app.xml", "spring/inmemory.xml");
             ctx.refresh();
              */
