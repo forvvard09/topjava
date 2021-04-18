@@ -1,17 +1,12 @@
 package ru.javawebinar.topjava.repository.datajpa.usesr;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.UserRepository;
-import ru.javawebinar.topjava.service.MealService;
 
 import java.util.List;
-
-import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFoundWithId;
 
 @Repository
 @Transactional(readOnly = true)
@@ -51,16 +46,9 @@ public class DataJpaUserRepository implements UserRepository {
         return crudUserRepository.findAll(SORT_NAME_EMAIL);
     }
 
-    @Autowired
-    private MealService mealService;
 
-
-    @Transactional
-    public User getWithMeals(Integer id) {
-        User user = checkNotFoundWithId(get(id), id);
-        List<Meal> meals = mealService.getAll(id);
-        //List<Meal> mealsCheck = meals.isEmpty() ? null : meals;
-        user.setMeals(meals);
-        return user;
+    @Override
+    public User getWithMeals(Integer userId) {
+        return crudUserRepository.getWithMeal(userId);
     }
 }

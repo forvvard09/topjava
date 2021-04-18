@@ -24,6 +24,6 @@ public interface CrudMealRepository extends JpaRepository<Meal, Integer> {
     List<Meal> getBetweenHalfOpen(@Param("startDateTime") LocalDateTime startDateTime, @Param("endDateTime") LocalDateTime endDateTime, @Param("userId") int userId);
 
     @Transactional
-    @Query("SELECT m FROM Meal m JOIN fetch m.user where m.id=:id and m.user.id =:userId")
+    @Query("SELECT m FROM Meal m JOIN FETCH m.user where m.id=:id and m.user.id =:userId")
     Meal getWithUser(@Param("id") int id, @Param("userId") int userId);
 }

@@ -7,7 +7,9 @@ import org.springframework.util.Assert;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.UserRepository;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFound;
 import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFoundWithId;
@@ -43,7 +45,9 @@ public class UserService {
 
     @Cacheable("users")
     public List<User> getAll() {
-        return repository.getAll();
+        return repository.getAll().stream()
+                .sorted(Comparator.comparing(User::id))
+                .collect(Collectors.toList());
     }
 
     @CacheEvict(value = "users", allEntries = true)
@@ -52,7 +56,9 @@ public class UserService {
         checkNotFoundWithId(repository.save(user), user.id());
     }
 
-    public User getWithMeals(Integer id) {
-        return repository.getWithMeals(id);
+    public User getWithMeals(Integer userId) {
+        Assert.notNull(userId, "userId must not be null");
+
+        return checkNotFoundWithId(repository.getWithMeals(userId), userId);
     }
 }

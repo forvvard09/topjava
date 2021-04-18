@@ -12,7 +12,9 @@ import ru.javawebinar.topjava.service.AbstractServiceTest;
 import ru.javawebinar.topjava.service.UserService;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertThrows;
 import static ru.javawebinar.topjava.UserTestData.*;
@@ -83,6 +85,9 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
     @Test
     public void getAll() {
         List<User> all = service.getAll();
-        USER_MATCHER.assertMatch(all, admin, user);
+        List<User> users = List.of(admin, emptyUser, user).stream()
+                .sorted(Comparator.comparing(User::id))
+                .collect(Collectors.toList());
+        USER_MATCHER.assertMatch(all, users);
     }
 }
