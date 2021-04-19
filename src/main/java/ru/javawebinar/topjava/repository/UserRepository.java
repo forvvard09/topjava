@@ -19,7 +19,7 @@ public interface UserRepository {
 
     List<User> getAll();
 
-    default User getWithMeals(Integer userId) {
+    default User getWithMeals(Integer id) {
         throw new UnsupportedOperationException();
     }
 }

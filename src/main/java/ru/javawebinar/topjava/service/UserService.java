@@ -45,9 +45,7 @@ public class UserService {
 
     @Cacheable("users")
     public List<User> getAll() {
-        return repository.getAll().stream()
-                .sorted(Comparator.comparing(User::id))
-                .collect(Collectors.toList());
+        return repository.getAll();
     }
 
     @CacheEvict(value = "users", allEntries = true)
@@ -56,8 +54,8 @@ public class UserService {
         checkNotFoundWithId(repository.save(user), user.id());
     }
 
-    public User getWithMeals(Integer userId) {
-        Assert.notNull(userId, "userId must not be null");
-        return checkNotFoundWithId(repository.getWithMeals(userId), userId);
+    public User getWithMeals(Integer id) {
+        Assert.notNull(id, "id must not be null");
+        return checkNotFoundWithId(repository.getWithMeals(id), id);
     }
 }

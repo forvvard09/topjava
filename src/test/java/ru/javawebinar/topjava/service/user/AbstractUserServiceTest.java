@@ -86,7 +86,7 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
     public void getAll() {
         List<User> all = service.getAll();
         List<User> users = List.of(admin, emptyUser, user).stream()
-                .sorted(Comparator.comparing(User::id))
+                .sorted(Comparator.comparing(User::getName).thenComparing(User::getEmail))
                 .collect(Collectors.toList());
         USER_MATCHER.assertMatch(all, users);
     }
