@@ -28,11 +28,21 @@ public class MealServlet extends HttpServlet {
 
     @Override
     public void init() {
+        /*
+        //основонй способ
         springContext = new ClassPathXmlApplicationContext();
         springContext.setConfigLocations("spring/spring-app.xml", "spring/spring-db.xml");
         ConfigurableEnvironment env = springContext.getEnvironment();
         env.setActiveProfiles(Profiles.getActiveDbProfile(), Profiles.REPOSITORY_IMPLEMENTATION);
         springContext.refresh();
+        */
+
+        //еще один способ - самый короткий
+        springContext = new ClassPathXmlApplicationContext(new String[]{"spring/spring-app.xml", "spring/spring-db.xml"}, false);
+        ConfigurableEnvironment env = springContext.getEnvironment();
+        env.setActiveProfiles(Profiles.getActiveDbProfile(), Profiles.REPOSITORY_IMPLEMENTATION);
+        springContext.refresh();
+
         mealController = springContext.getBean(MealRestController.class);
     }
 

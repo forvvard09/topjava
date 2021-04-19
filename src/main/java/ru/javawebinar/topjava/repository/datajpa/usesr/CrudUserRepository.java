@@ -1,5 +1,6 @@
 package ru.javawebinar.topjava.repository.datajpa.usesr;
 
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -17,6 +18,9 @@ public interface CrudUserRepository extends JpaRepository<User, Integer> {
 
     User getByEmail(String email);
 
-    @Query("SELECT u FROM User u LEFT JOIN fetch u.meals m where u.id=:id ORDER BY m.id DESC")
+    //@EntityGraph(attributePaths = {"meals", "roles"})
+    @EntityGraph(value = User.GRAPH_WITH_MEALS)
+    //@Query("SELECT u FROM User u LEFT JOIN fetch u.meals m where u.id=:id ORDER BY m.id DESC")
+    @Query("SELECT u FROM User u where u.id=:id")
     User getWithMeal(@Param("id") int id);
 }

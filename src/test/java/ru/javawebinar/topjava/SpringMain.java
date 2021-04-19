@@ -18,6 +18,7 @@ public class SpringMain {
     public static void main(String[] args) {
         // java 7 automatic resource management (ARM)
 
+        //первый способ работы с профилями
         //work with profile: https://www.javacodegeeks.com/2012/08/spring-profiles-in-xml-config-files.html
         try (ClassPathXmlApplicationContext appCtx = new ClassPathXmlApplicationContext()) {
             appCtx.setConfigLocations("spring/spring-app.xml", "spring/inmemory.xml");
