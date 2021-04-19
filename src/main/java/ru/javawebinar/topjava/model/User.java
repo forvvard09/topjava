@@ -63,6 +63,7 @@ public class User extends AbstractNamedEntity {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     //@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OrderBy("dateTime DESC")
     private List<Meal> meals;
 
     public User() {
