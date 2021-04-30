@@ -1,4 +1,4 @@
-package ru.javawebinar.topjava.web.meal;
+package ru.javawebinar.topjava.web.inmemory.meal;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

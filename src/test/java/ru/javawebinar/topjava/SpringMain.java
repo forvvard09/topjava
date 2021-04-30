@@ -1,11 +1,13 @@
 package ru.javawebinar.topjava;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.GenericXmlApplicationContext;
+import org.springframework.core.env.AbstractEnvironment;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.to.MealTo;
-import ru.javawebinar.topjava.web.meal.MealRestController;
-import ru.javawebinar.topjava.web.user.AdminRestController;
+import ru.javawebinar.topjava.web.inmemory.user.AdminRestController;
+import ru.javawebinar.topjava.web.inmemory.meal.MealRestController;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -14,12 +16,18 @@ import java.util.Arrays;
 import java.util.List;
 
 public class SpringMain {
+
     public static void main(String[] args) {
         // java 7 automatic resource management (ARM)
         try (GenericXmlApplicationContext appCtx = new GenericXmlApplicationContext()) {
             appCtx.getEnvironment().setActiveProfiles(Profiles.getActiveDbProfile(), Profiles.REPOSITORY_IMPLEMENTATION);
-            appCtx.load("spring/spring-app.xml", "spring/spring-db.xml");
+            appCtx.load("spring/inmemory.xml", "spring/spring-app.xml");
             appCtx.refresh();
+
+            //print active profile
+            for(String profile : appCtx.getEnvironment().getActiveProfiles()){
+                System.out.println(">>>>>>"+profile);
+            }
 
             System.out.println("Bean definition names: " + Arrays.toString(appCtx.getBeanDefinitionNames()));
             AdminRestController adminUserController = appCtx.getBean(AdminRestController.class);
