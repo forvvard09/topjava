@@ -1,4 +1,4 @@
-package ru.javawebinar.topjava.web.inmemory.user;
+package ru.javawebinar.topjava.web.user;
 
 import org.junit.Assert;
 import org.junit.Before;

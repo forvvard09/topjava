@@ -1,13 +1,11 @@
 package ru.javawebinar.topjava;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.GenericXmlApplicationContext;
-import org.springframework.core.env.AbstractEnvironment;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.to.MealTo;
-import ru.javawebinar.topjava.web.inmemory.user.AdminRestController;
-import ru.javawebinar.topjava.web.inmemory.meal.MealRestController;
+import ru.javawebinar.topjava.web.meal.MealRestController;
+import ru.javawebinar.topjava.web.user.AdminRestController;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -25,8 +23,8 @@ public class SpringMain {
             appCtx.refresh();
 
             //print active profile
-            for(String profile : appCtx.getEnvironment().getActiveProfiles()){
-                System.out.println(">>>>>>"+profile);
+            for (String profile : appCtx.getEnvironment().getActiveProfiles()) {
+                System.out.println(">>>>>>" + profile);
             }
 
             System.out.println("Bean definition names: " + Arrays.toString(appCtx.getBeanDefinitionNames()));

@@ -24,19 +24,19 @@
 
         <input type="hidden" name="id" value="${mealForm.id}">
         <dl>
-            <dt>DateTime:</dt>
+            <dt><spring:message code="meal.create.date"/>:</dt>
             <dd><input type="datetime-local" value="${mealForm.dateTime}" name="dateTime" required></dd>
         </dl>
         <dl>
-            <dt>Description:</dt>
+            <dt><spring:message code="meal.create.description"/>:</dt>
             <dd><input type="text" value="${mealForm.description}" size=40 name="description" required></dd>
         </dl>
         <dl>
-            <dt>Calories:</dt>
+            <dt><spring:message code="meal.create.calories"/>:</dt>
             <dd><input type="number" value="${mealForm.calories}" name="calories" required></dd>
         </dl>
-        <button type="submit">Save</button>
-        <button onclick="window.history.back()" type="button">Cancel</button>
+        <button type="submit"><spring:message code="meal.create.save"/></button>
+        <button onclick="window.history.back()" type="button"><spring:message code="meal.create.cancel"/></button>
     </form>
 </section>
 <jsp:include page="fragments/footer.jsp"/>

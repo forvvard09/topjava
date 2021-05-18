@@ -28,12 +28,11 @@ import static ru.javawebinar.topjava.util.ValidationUtil.getRootCause;
 @ActiveProfiles(resolver = ActiveDbProfileResolver.class)
 abstract public class AbstractServiceTest {
 
-
     @Autowired
     Environment environment;
 
-    public boolean isProfileJdbc() {
-        for(String profile : environment.getActiveProfiles()){
+    public boolean isProfileJDBC() {
+        for (String profile : environment.getActiveProfiles()) {
             if (profile.equals(Profiles.JDBC)) {
                 return true;
             }
