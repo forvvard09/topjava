@@ -67,6 +67,7 @@ public class JdbcUserRepository implements UserRepository {
         return user;
     }
 
+
     private void addRoles(User user) {
         List<Role> listRole = new ArrayList<Role>(user.getRoles());
         jdbcTemplate.batchUpdate("INSERT INTO user_roles(user_id, role) values (?, ?)",
@@ -99,14 +100,14 @@ public class JdbcUserRepository implements UserRepository {
         List<User> users = jdbcTemplate.query("SELECT * FROM users WHERE id=?", ROW_MAPPER, id);
         User user = DataAccessUtils.singleResult(users);
         if (users.size() > 0) {
-            user.setRoles(addRoles(user.id()));
+            user.setRoles(getRoles(user.id()));
         }
         return user;
     }
 
-    private Collection<Role> addRoles(int id) {
+    private Collection<Role> getRoles(int id) {
         List<Role> listRole = jdbcTemplate.query("SELECT * FROM  user_roles WHERE user_id=?",
-                (rs, rowNum) -> Role.valueOf(rs.getString("role")), id);
+                (resultSet, rowsNumber) -> Role.valueOf(resultSet.getString("role")), id);
         return listRole;
     }
 
@@ -114,9 +115,8 @@ public class JdbcUserRepository implements UserRepository {
     public User getByEmail(String email) {
 //        return jdbcTemplate.queryForObject("SELECT * FROM users WHERE email=?", ROW_MAPPER, email);
         List<User> users = jdbcTemplate.query("SELECT * FROM users WHERE email=?", ROW_MAPPER, email);
-        //to do
         User user = DataAccessUtils.singleResult(users);
-        user.setRoles(addRoles(user.getId()));
+        user.setRoles(getRoles(user.getId()));
         return user;
     }
 
