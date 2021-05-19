@@ -31,6 +31,7 @@ abstract public class AbstractServiceTest {
     @Autowired
     Environment environment;
 
+    /*
     public boolean isProfileJDBC() {
         for (String profile : environment.getActiveProfiles()) {
             if (profile.equals(Profiles.JDBC)) {
@@ -39,6 +40,8 @@ abstract public class AbstractServiceTest {
         }
         return false;
     }
+
+     */
 
     @ClassRule
     public static ExternalResource summary = TimingRules.SUMMARY;
