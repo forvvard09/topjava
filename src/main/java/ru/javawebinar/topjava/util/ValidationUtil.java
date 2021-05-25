@@ -58,7 +58,6 @@ public class ValidationUtil {
     public static void validate(Object object) {
         ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
         Validator validator = validatorFactory.getValidator();
-        //validator.validate(meal);
         Set<ConstraintViolation<Object>> validate = validator.validate(object);
 
         validatorFactory.close();
