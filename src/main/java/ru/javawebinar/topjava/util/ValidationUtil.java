@@ -10,7 +10,16 @@ import javax.validation.*;
 import java.util.Set;
 
 public class ValidationUtil {
+
+    private static final Validator validator;
+
+    static {
+        ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+        validator = validatorFactory.getValidator();
+    }
+
     private ValidationUtil() {
+
     }
 
     public static <T> T checkNotFoundWithId(T object, int id) {
@@ -55,16 +64,12 @@ public class ValidationUtil {
         return rootCause != null ? rootCause : t;
     }
 
-    public static void validate(Object object) {
-        ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
-        Validator validator = validatorFactory.getValidator();
+    public static <T> void validate(T object) {
         Set<ConstraintViolation<Object>> validate = validator.validate(object);
-
-        validatorFactory.close();
+        //AUTOCLOSED
 
         if (validate.size() > 0) {
             throw new ConstraintViolationException(validate);
         }
-
     }
 }
