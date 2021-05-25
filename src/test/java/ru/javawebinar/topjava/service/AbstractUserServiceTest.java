@@ -45,7 +45,6 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
             jpaUtil.clear2ndLevelHibernateCache();
         }
     }
-
      */
 
 

@@ -2,11 +2,11 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:cache="http://www.springframework.org/schema/cache"
-       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:p="http://www.springframework.org/schema/p" xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
          http://www.springframework.org/schema/beans/spring-beans.xsd
          http://www.springframework.org/schema/cache
-         http://www.springframework.org/schema/cache/spring-cache.xsd">
+         http://www.springframework.org/schema/cache/spring-cache.xsd http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd">
 
     <!-- enables scanning for @Cacheable annotation -->
     <cache:annotation-driven cache-manager="ehCacheManager"/>
@@ -20,5 +20,17 @@
     </bean>
 
     <bean id="noOpCacheManager" class="org.springframework.cache.support.NoOpCacheManager"/>
+
+
+    <!--<bean class="org.springframework.beans.factory.config.PropertyOverrideConfigurer">
+        <property name="location" value="classpath:beanOverride.cfg" />
+    </bean>-->
+
+    <!-- creates a java.util.Map instance with the supplied key-value pairs -->
+
+
+    <util:map id="entityManagerFactory">
+        <entry key="#{T(org.hibernate.cfg.AvailableSettings).USE_SECOND_LEVEL_CACHE}" value="false"/>
+    </util:map>
 
 </beans>
