@@ -18,10 +18,7 @@ import ru.javawebinar.topjava.util.ValidationUtil;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Repository
 @Transactional(readOnly = true)
@@ -102,7 +99,7 @@ public class JdbcUserRepository implements UserRepository {
 
     private User getWithRoles(List<User> users) {
         User user = DataAccessUtils.singleResult(users);
-        if (users.size() > 0) {
+        if (user != null) {
             List<Role> listRole = jdbcTemplate.query("SELECT * FROM  user_roles WHERE user_id=?",
                     (resultSet, rowsNumber) -> Role.valueOf(resultSet.getString("role")), user.id());
             if (listRole.size() > 0) {
@@ -122,21 +119,24 @@ public class JdbcUserRepository implements UserRepository {
     @Override
     public List<User> getAll() {
         List<User> userList = jdbcTemplate.query("SELECT * FROM users ORDER BY name, email", ROW_MAPPER);
-        Map<Integer, List<Role>> userRoleMap = this.jdbcTemplate.query("SELECT * FROM  user_roles", (ResultSet rs) -> {
-            HashMap<Integer, List<Role>> mapRet = new HashMap<>();
+        Map<Integer, Set<Role>> userRoleMap = this.jdbcTemplate.query("SELECT * FROM  user_roles", (ResultSet rs) -> {
+            HashMap<Integer, Set<Role>> mapRet = new HashMap<>();
             while (rs.next()) {
                 Integer userId = rs.getInt("user_id");
                 Role role = Role.valueOf(rs.getString("role"));
-                if (mapRet.containsKey(userId)) {
-                    List<Role> name = mapRet.get(userId);
-                    name.add(role);
-                    //mapRet.computeIfPresent(userId, (key, value) -> value.add(role));
-                } else {
-                    List<Role> newList = new ArrayList<>();
-                    newList.add(role);
-                    mapRet.put(userId, newList);
-                    //mapRet.computeIfAbsent(userId, (key, value) -> new ArrayList<>(singletonList(role)));
-                }
+
+
+                // map - method merge
+                /*
+                mapRet.merge(userId, new HashSet<>(Collections.singletonList(role)), (oldValue, newValue) -> {
+                    oldValue.addAll(newValue);
+                    return oldValue;
+                });
+                 */
+
+                // через computeIfAbsent - так красивее
+                mapRet.computeIfAbsent(userId, value -> new HashSet<>())
+                        .add(role);
             }
             return mapRet;
         });
@@ -166,7 +166,7 @@ public class JdbcUserRepository implements UserRepository {
       */
 
         // тут возможно надо сделать не null, а user, если это будет в дальнейшем роль по умолчанию
-        userList.forEach(user -> user.setRoles(userRoleMap.getOrDefault(user.getId(), null)));
+        userList.forEach(user -> user.setRoles(userRoleMap.getOrDefault(user.getId(), Collections.emptySet())));
 
         return userList;
     }
