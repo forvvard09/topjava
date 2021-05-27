@@ -119,8 +119,8 @@ public class JdbcUserRepository implements UserRepository {
     @Override
     public List<User> getAll() {
         List<User> userList = jdbcTemplate.query("SELECT * FROM users ORDER BY name, email", ROW_MAPPER);
-        Map<Integer, Set<Role>> userRoleMap = this.jdbcTemplate.query("SELECT * FROM  user_roles", (ResultSet rs) -> {
-            HashMap<Integer, Set<Role>> mapRet = new HashMap<>();
+        Map<Integer, EnumSet<Role>> userRoleMap = this.jdbcTemplate.query("SELECT * FROM  user_roles", (ResultSet rs) -> {
+            HashMap<Integer, EnumSet<Role>> mapRet = new HashMap<>();
             while (rs.next()) {
                 Integer userId = rs.getInt("user_id");
                 Role role = Role.valueOf(rs.getString("role"));
@@ -135,7 +135,7 @@ public class JdbcUserRepository implements UserRepository {
                  */
 
                 // через computeIfAbsent - так красивее
-                mapRet.computeIfAbsent(userId, value -> new HashSet<>())
+                mapRet.computeIfAbsent(userId, value -> EnumSet.noneOf(Role.class))
                         .add(role);
             }
             return mapRet;
@@ -166,7 +166,7 @@ public class JdbcUserRepository implements UserRepository {
       */
 
         // тут возможно надо сделать не null, а user, если это будет в дальнейшем роль по умолчанию
-        userList.forEach(user -> user.setRoles(userRoleMap.getOrDefault(user.getId(), Collections.emptySet())));
+        userList.forEach(user -> user.setRoles(userRoleMap.getOrDefault(user.getId(), EnumSet.noneOf(Role.class))));
 
         return userList;
     }
