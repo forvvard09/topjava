@@ -11,7 +11,9 @@ import ru.javawebinar.topjava.util.exception.NotFoundException;
 import ru.javawebinar.topjava.web.AbstractControllerTest;
 import ru.javawebinar.topjava.web.json.JsonUtil;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -94,6 +96,7 @@ public class MealRestControllerTest extends AbstractControllerTest {
     @Test
     void getBetweenInclusive() throws Exception {
 
+            //?startDateTime=2020-01-30T00:00:01&endDateTime=2020-01-30T23:59:01
         final String START_DATE_TIME = "2020-01-30T00:00:01";
         final String END_DATE_TIME = "2020-01-30T23:59:01";
         final String urlFilter = String.format("filter?startDateTime=%s&endDateTime=%s", START_DATE_TIME, END_DATE_TIME);
@@ -106,5 +109,59 @@ public class MealRestControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MEAL_TO_MATCHER.contentJson(getFilteredTos(meals, authUserCaloriesPerDay(), LocalDateTime.parse(START_DATE_TIME).toLocalTime(), LocalDateTime.parse(END_DATE_TIME).toLocalTime())));
+    }
+
+    @Test
+    void getBetweenInclusiveOpt() throws Exception {
+        final String START_DATE = "2020-01-30";
+        final String START_TIME = "00:00:01";
+        final String END_DATE = "2020-01-31";
+        final String END_TIME = "10:00:00";
+        final String urlFilter = String.format(
+                "filter-opt?startDate=%s&startTime=%s&endDate=%s&endTime=%s",
+                START_DATE,
+                START_TIME,
+                END_DATE,
+                END_TIME);
+        setAuthUserId(USER_ID);
+        List<Meal> meals = service.getBetweenInclusive(LocalDate.parse(START_DATE), LocalDate.parse(END_DATE), USER_ID);
+        perform(MockMvcRequestBuilders.get(REST_URL + urlFilter))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(MEAL_TO_MATCHER.contentJson(getFilteredTos(meals, authUserCaloriesPerDay(), LocalTime.parse(START_TIME), LocalTime.parse(END_TIME))));
+    }
+
+    @Test
+    void getBetweenInclusiveOptWithEmptyParameters() throws Exception {
+        final String START_DATE = "2020-01-30";
+        final String END_TIME = "10:00:00";
+        final String urlFilter = String.format(
+                "filter-opt?startDate=%s&endTime=%s",
+                START_DATE,
+                END_TIME);
+        setAuthUserId(USER_ID);
+        List<Meal> meals = service.getBetweenInclusive(LocalDate.parse(START_DATE), null, USER_ID);
+        perform(MockMvcRequestBuilders.get(REST_URL + urlFilter))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(MEAL_TO_MATCHER.contentJson(getFilteredTos(meals, authUserCaloriesPerDay(), null, LocalTime.parse(END_TIME))));
+    }
+
+    @Test
+    void getBetweenInclusiveOptWithEmptyAllParameters() throws Exception {
+        final String urlFilter = String.format(
+                "filter-opt");
+        setAuthUserId(USER_ID);
+        List<Meal> meals = service.getBetweenInclusive(null, null, USER_ID);
+        perform(MockMvcRequestBuilders.get(REST_URL + urlFilter))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(MEAL_TO_MATCHER.contentJson(getFilteredTos(meals, authUserCaloriesPerDay(), null, null)));
     }
 }

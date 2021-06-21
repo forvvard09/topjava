@@ -33,7 +33,7 @@ public class TestMatcher<T> {
 
     //to do
     public void assertMatch(List<MealTo> actual, List<MealTo> expected) {
-        assertMatch(actual, expected);
+        assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
     }
 
     @SafeVarargs
