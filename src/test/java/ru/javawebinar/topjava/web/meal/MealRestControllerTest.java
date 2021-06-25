@@ -99,11 +99,12 @@ public class MealRestControllerTest extends AbstractControllerTest {
             //?startDateTime=2020-01-30T00:00:01&endDateTime=2020-01-30T23:59:01
         final String START_DATE_TIME = "2020-01-30T00:00:01";
         final String END_DATE_TIME = "2020-01-30T23:59:01";
-        final String urlFilter = String.format("filter?startDateTime=%s&endDateTime=%s", START_DATE_TIME, END_DATE_TIME);
 
         setAuthUserId(USER_ID);
         List<Meal> meals = service.getBetweenInclusive(LocalDateTime.parse(START_DATE_TIME).toLocalDate(), LocalDateTime.parse(END_DATE_TIME).toLocalDate(), USER_ID);
-        perform(MockMvcRequestBuilders.get(REST_URL + urlFilter))
+        perform(MockMvcRequestBuilders.get(REST_URL + "filter")
+                .param("startDateTime", START_DATE_TIME)
+                .param("endDateTime", END_DATE_TIME))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andDo(print())
@@ -117,15 +118,13 @@ public class MealRestControllerTest extends AbstractControllerTest {
         final String START_TIME = "00:00:01";
         final String END_DATE = "2020-01-31";
         final String END_TIME = "10:00:00";
-        final String urlFilter = String.format(
-                "filter-opt?startDate=%s&startTime=%s&endDate=%s&endTime=%s",
-                START_DATE,
-                START_TIME,
-                END_DATE,
-                END_TIME);
         setAuthUserId(USER_ID);
         List<Meal> meals = service.getBetweenInclusive(LocalDate.parse(START_DATE), LocalDate.parse(END_DATE), USER_ID);
-        perform(MockMvcRequestBuilders.get(REST_URL + urlFilter))
+        perform(MockMvcRequestBuilders.get(REST_URL + "filter-opt")
+                .param("startDate", START_DATE)
+                .param("startTime", START_TIME)
+                .param("endDate", END_DATE)
+                .param("endTime", END_TIME))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andDo(print())
@@ -137,13 +136,11 @@ public class MealRestControllerTest extends AbstractControllerTest {
     void getBetweenInclusiveOptWithEmptyParameters() throws Exception {
         final String START_DATE = "2020-01-30";
         final String END_TIME = "10:00:00";
-        final String urlFilter = String.format(
-                "filter-opt?startDate=%s&endTime=%s",
-                START_DATE,
-                END_TIME);
         setAuthUserId(USER_ID);
         List<Meal> meals = service.getBetweenInclusive(LocalDate.parse(START_DATE), null, USER_ID);
-        perform(MockMvcRequestBuilders.get(REST_URL + urlFilter))
+        perform(MockMvcRequestBuilders.get(REST_URL + "filter-opt")
+                .param("startDate", START_DATE)
+                .param("endTime", END_TIME))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andDo(print())
@@ -153,11 +150,9 @@ public class MealRestControllerTest extends AbstractControllerTest {
 
     @Test
     void getBetweenInclusiveOptWithEmptyAllParameters() throws Exception {
-        final String urlFilter = String.format(
-                "filter-opt");
         setAuthUserId(USER_ID);
         List<Meal> meals = service.getBetweenInclusive(null, null, USER_ID);
-        perform(MockMvcRequestBuilders.get(REST_URL + urlFilter))
+        perform(MockMvcRequestBuilders.get(REST_URL +"filter-opt"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andDo(print())

@@ -1,7 +1,6 @@
 package ru.javawebinar.topjava;
 
 import org.springframework.test.web.servlet.ResultMatcher;
-import ru.javawebinar.topjava.to.MealTo;
 
 import java.util.List;
 
@@ -22,16 +21,7 @@ public class TestMatcher<T> {
     }
 
     public void assertMatch(T actual, T expected) {
-        if (fieldsToIgnore != null) {
-            assertThat(actual).usingRecursiveComparison().ignoringFields(fieldsToIgnore).isEqualTo(expected);
-        } else {
-            assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
-        }
-    }
-
-    //to do
-    public void assertMatch(List<MealTo> actual, List<MealTo> expected) {
-        assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
+        assertThat(actual).usingRecursiveComparison().ignoringFields(fieldsToIgnore).isEqualTo(expected);
     }
 
     @SafeVarargs

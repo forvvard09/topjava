@@ -1,0 +1,216 @@
+{
+	"info": {
+		"_postman_id": "ba94d193-ab6c-4771-9e5b-7e6698d47282",
+		"name": "topJava",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "getAllForUser",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080//topjava/rest/meals",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"",
+						"topjava",
+						"rest",
+						"meals"
+					]
+				},
+				"description": "get all meal for user"
+			},
+			"response": []
+		},
+		{
+			"name": "createMealForUser",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"dateTime\": \"2021-06-21T02:09:42\",\r\n    \"description\": \"Rest. Create. Testing description.\",\r\n     \"calories\": \"999\"     \r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/topjava/rest/meals",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"topjava",
+						"rest",
+						"meals"
+					]
+				},
+				"description": "create new Meal for user"
+			},
+			"response": []
+		},
+		{
+			"name": "filterForUser",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/topjava/rest/meals/filter?startDateTime=2020-01-30T00:00:01&endDateTime=2020-01-30T23:59:01",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"topjava",
+						"rest",
+						"meals",
+						"filter"
+					],
+					"query": [
+						{
+							"key": "startDateTime",
+							"value": "2020-01-30T00:00:01"
+						},
+						{
+							"key": "endDateTime",
+							"value": "2020-01-30T23:59:01"
+						}
+					]
+				},
+				"description": "filter for meal by date and time"
+			},
+			"response": []
+		},
+		{
+			"name": "FilterOpt",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/topjava/rest/meals/filter-opt",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"topjava",
+						"rest",
+						"meals",
+						"filter-opt"
+					]
+				},
+				"description": "Filter with different parameteres for date and time"
+			},
+			"response": []
+		},
+		{
+			"name": "FilterOpt",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/topjava/rest/meals/filter-opt?startDate=2020-01-30&endTime=10:00:00",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"topjava",
+						"rest",
+						"meals",
+						"filter-opt"
+					],
+					"query": [
+						{
+							"key": "startDate",
+							"value": "2020-01-30"
+						},
+						{
+							"key": "endTime",
+							"value": "10:00:00"
+						}
+					]
+				},
+				"description": "Filter opt with parameters"
+			},
+			"response": []
+		},
+		{
+			"name": "getMeal",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080//topjava/rest/meals/100005",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"",
+						"topjava",
+						"rest",
+						"meals",
+						"100005"
+					]
+				},
+				"description": "get Meal by id"
+			},
+			"response": []
+		},
+		{
+			"name": "updateMeal",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"dateTime\": \"2021-05-21T00:00:00\",\r\n    \"description\": \"Rest. Update. Testing description.\",\r\n     \"calories\": \"13\"     \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080//topjava/rest/meals/100005",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"",
+						"topjava",
+						"rest",
+						"meals",
+						"100005"
+					]
+				},
+				"description": "update Meal"
+			},
+			"response": []
+		}
+	]
+}
