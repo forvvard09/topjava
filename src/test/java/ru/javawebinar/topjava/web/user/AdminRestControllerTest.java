@@ -90,10 +90,7 @@ class AdminRestControllerTest extends AbstractControllerTest {
     @Test
     void getWithMeals() throws Exception {
         Assumptions.assumeTrue(isProfileDATAJPA());
-
-        User expectedUserWithRoles = user;
-        expectedUserWithRoles.setMeals(meals);
-
+        user.setMeals(meals);
         perform(MockMvcRequestBuilders.get(String.format("%s/%s/%s", REST_URL, USER_ID, "with-meals")))
                 .andExpect(status().isOk())
                 .andDo(print())
