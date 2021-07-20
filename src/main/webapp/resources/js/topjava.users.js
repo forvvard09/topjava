@@ -5,6 +5,20 @@ const ctx = {
     ajaxUrl: userAjaxUrl
 };
 
+function setEnabled(row) {
+    let id = row.closest('tr').attr("id");
+    let enable = row[0].checked;
+    $.ajax({
+        type: "POST",
+        url: ctx.ajaxUrl + id,
+        data: "enabled=" + enable
+    }).done(function () {
+        //alert("Успешно обновлен");
+        row.closest('tr').attr("data-userEnable", enable);
+        successNoty("Enabled for user: " + enable);
+    });
+}
+
 // $(document).ready(function () {
 $(function () {
     makeEditable(

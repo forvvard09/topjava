@@ -4,10 +4,18 @@ function makeEditable(datatableApi) {
     ctx.datatableApi = datatableApi;
 
     form = $('#detailsForm');
+
     $(".delete").click(function () {
         if (confirm('Are you sure?')) {
             deleteRow($(this).closest('tr').attr("id"));
         }
+    });
+
+    $(".users-checkbox-enabled").click(function () {
+        //console.log($(this)[0].checked);
+        //console.log($(this).closest('tr').attr("id"));
+        setEnabled($(this));
+
     });
 
     $(document).ajaxError(function (event, jqXHR, options, jsExc) {
@@ -28,7 +36,11 @@ function deleteRow(id) {
         url: ctx.ajaxUrl + id,
         type: "DELETE"
     }).done(function () {
-        updateTable();
+        if (checkFilterForm()) {
+            filter();
+        } else {
+            updateTable();
+        }
         successNoty("Deleted");
     });
 }
@@ -39,6 +51,7 @@ function updateTable() {
     });
 }
 
+
 function save() {
     const form = $("#detailsForm");
     $.ajax({
@@ -47,7 +60,11 @@ function save() {
         data: form.serialize()
     }).done(function () {
         $("#editRow").modal("hide");
-        updateTable();
+        if (checkFilterForm()) {
+            filter();
+        } else {
+            updateTable();
+        }
         successNoty("Saved");
     });
 }

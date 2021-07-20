@@ -55,4 +55,11 @@ public class UserService {
     public User getWithMeals(int id) {
         return checkNotFoundWithId(repository.getWithMeals(id), id);
     }
+
+    @CacheEvict(value = "users", allEntries = true)
+    public void enable(int id, boolean enable) {
+        Assert.notNull(id, "id must not be null");
+        Assert.notNull(enable, "enable must not be null");
+        repository.enable(id, enable);
+    }
 }
