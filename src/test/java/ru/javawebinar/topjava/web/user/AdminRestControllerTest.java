@@ -98,7 +98,7 @@ class AdminRestControllerTest extends AbstractControllerTest {
 
     @Test
     void enable() throws Exception {
-        perform(MockMvcRequestBuilders.patch(REST_URL + USER_ID)
+        perform(MockMvcRequestBuilders.put(REST_URL + USER_ID)
                 .param("enabled", "true")
                 .contentType(MediaType.TEXT_HTML_VALUE))
                 .andDo(print())
@@ -108,7 +108,7 @@ class AdminRestControllerTest extends AbstractControllerTest {
 
     @Test
     void disable() throws Exception {
-        perform(MockMvcRequestBuilders.patch(REST_URL + USER_ID)
+        perform(MockMvcRequestBuilders.put(REST_URL + USER_ID)
                 .param("enabled", "false")
                 .contentType(MediaType.TEXT_HTML_VALUE))
                 .andDo(print())
